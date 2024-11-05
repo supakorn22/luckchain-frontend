@@ -34,6 +34,7 @@ To get started with the LuckChain Lottery DApp, follow these steps:
     ```bash
     git clone https://github.com/yourusername/luckchain-frontend.git
     cd luckchain-frontend
+    cd front-end
     ```
 
 2. Install dependencies:
