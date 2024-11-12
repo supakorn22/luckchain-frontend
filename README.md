@@ -32,29 +32,29 @@ LuckChain is a blockchain-based lottery application where users can participate 
 To get started with the LuckChain Lottery, follow these steps:
 
 1. Clone the repository:
-        ```bash
+        ```
         git clone https://github.com/yourusername/luckchain-frontend.git
         cd luckchain-frontend
         cd front-end
         ```
 
-2. Install dependencies:
-        ```bash
+3. Install dependencies:
+        ```
         npm install
         ```
 
-3. Create a `.env.local` file and add your environment variables:
+4. Create a `.env.local` file and add your environment variables:
         ```plaintext
         NEXT_PUBLIC_INFURA_ID=your_infura_project_id
         NEXT_PUBLIC_CONTRACT_ADDRESS=your_smart_contract_address
         ```
 
-4. Run the development server:
+5. Run the development server:
         ```bash
         npm run dev
         ```
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Usage
 1. Connect your wallet (e.g., MetaMask) to the Binance Smart Chain Testnet.
