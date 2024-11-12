@@ -32,7 +32,7 @@ LuckChain is a blockchain-based lottery application where users can participate 
 To get started with the LuckChain Lottery, follow these steps:
 
 1. Clone the repository:
-        ```
+        ```bash
         git clone https://github.com/yourusername/luckchain-frontend.git
         cd luckchain-frontend
         cd front-end
