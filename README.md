@@ -32,27 +32,31 @@ LuckChain is a blockchain-based lottery application where users can participate 
 To get started with the LuckChain Lottery, follow these steps:
 
 1. Clone the repository:
-        ```bash
+   
+        
         git clone https://github.com/yourusername/luckchain-frontend.git
         cd luckchain-frontend
         cd front-end
-        ```
+        
 
-3. Install dependencies:
-        ```
+4. Install dependencies:
+   
+        
         npm install
-        ```
+        
 
-4. Create a `.env.local` file and add your environment variables:
-        ```plaintext
+3. Create a `.env.local` file and add your environment variables:
+
+        
         NEXT_PUBLIC_INFURA_ID=your_infura_project_id
         NEXT_PUBLIC_CONTRACT_ADDRESS=your_smart_contract_address
-        ```
+        
 
-5. Run the development server:
-        ```bash
+4. Run the development server:
+   
+        
         npm run dev
-        ```
+        
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
