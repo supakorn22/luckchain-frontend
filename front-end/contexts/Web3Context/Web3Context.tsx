@@ -45,7 +45,7 @@ const Web3Provider: FC<{ children: ReactNode }> = ({ children }) => {
 					const walletConnect = walletConnectModule({
 						projectId: process.env.WALLET_CONNECT_PROJECT_ID,
 						dappUrl: window.location.origin,
-						requiredChains: [NETWORKS.ethereum],
+						requiredChains: [NETWORKS.bnbSmartChainTestnet],
 						qrModalOptions: {
 							themeVariables: {
 								'--wcm-z-index': '999',
