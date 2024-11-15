@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import useTestContract from '@utils/governanceLotteryContract/uesGovernanceLotteryContract';
 import useWeb3 from '@hooks/useWeb3';
 
-const ContractInteraction: React.FC = () => {
+const TestLotteryContract: React.FC = () => {
 
     const { accounts } = useWeb3();  // Assuming useWeb3() provides the accounts
     const buyerAddress = accounts[0]?.address; // Use the first account address as buyer address
@@ -18,6 +18,8 @@ const ContractInteraction: React.FC = () => {
     const [inputValueBuyer_to_lotteries2, setInputValueBuyer_to_lotteries2] = useState<number | 0>(0); // Input value for storing
     const [isLoading, setIsLoading] = useState(false);
     const [inputValueBuyLotter1, setInputValueBuyLotter1] = useState<number | 0>(0);
+    const [inputValueChangeAddress1, setInputValueChangeAddress1] = useState<string | "">("");
+    const [currentContractAddress, setCurrentContractAddress] = useState<string | "">(useTestContract.contractAddress);
 
     // Function to interact with the contract
     const handleBuyer_to_lotteries = async () => {
@@ -27,6 +29,11 @@ const ContractInteraction: React.FC = () => {
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -39,6 +46,11 @@ const ContractInteraction: React.FC = () => {
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -53,6 +65,11 @@ const ContractInteraction: React.FC = () => {
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -66,6 +83,11 @@ const ContractInteraction: React.FC = () => {
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -80,119 +102,145 @@ const ContractInteraction: React.FC = () => {
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
         } finally {
             setIsLoading(false);
         }
 
     }
 
+    const handleLotteryAddress = async () => {
+        useTestContract.setContractAddress(inputValueChangeAddress1);
+        setCurrentContractAddress(inputValueChangeAddress1);
+        console.log("Contract address changed to:", inputValueChangeAddress1);
+
+    }
+
+    const handleGetContractAddress = async () => {
+        console.log("Current contract address:", useTestContract.contractAddress);
+    }
 
     return (
-        <div className="flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16">
+        <div className="flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 space-y-2">
 
-            {/* Input and Button for store */}
-            <div className="space-y-4">
+            {/* Input and Button for changing contract address */}
+            <div className="space-y-4 border border-gray-400 p-4 rounded">
+        <h3 className="font-bold text-lg">Contract Address</h3>
+        <p className="bg-gray-100 p-2 border border-gray-300 rounded text-black w-full">
+            {currentContractAddress || "No address set"}
+        </p>
+        <input
+            type="text"
+            value={inputValueChangeAddress1}
+            onChange={(e) => setInputValueChangeAddress1(e.target.value)}
+            className="p-2 border border-gray-300 rounded text-black w-full"
+            placeholder="Enter new contract address"
+        />
+        <div className="flex space-x-4">
+            <button
+                onClick={handleLotteryAddress}
+                className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                disabled={isLoading || inputValueChangeAddress1 === ""}
+            >
+                {isLoading ? 'Loading...' : 'Change Address'}
+            </button>
+            <button
+                onClick={handleGetContractAddress}
+                className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+            >
+                Get Contract Address
+            </button>
+        </div>
+    </div>
+
+
+            {/* Input and Button for storing data */}
+            <div className="space-y-4 border border-gray-400 p-4 rounded">
+                <h3 className="font-bold text-lg">Get a lottery</h3>
                 <input
                     type="text"
                     value={inputValueBuyer_to_lotteries1}
                     onChange={(e) => setInputValueBuyer_to_lotteries1(e.target.value)}
-                    className="mt-4 p-2 border border-gray-300 rounded text-black"
-                    placeholder="Enter address "
+                    className="p-2 border border-gray-300 rounded text-black w-full"
+                    placeholder="Enter address"
                 />
                 <input
                     type="number"
                     value={inputValueBuyer_to_lotteries2}
                     onChange={(e) => setInputValueBuyer_to_lotteries2(Number(e.target.value))}
-                    className="mt-4 p-2 border border-gray-300 rounded text-black"
+                    className="p-2 border border-gray-300 rounded text-black w-full"
                     placeholder="Enter lottery number"
                 />
-
-
-
                 <button
                     onClick={handleBuyer_to_lotteries}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-                    disabled={isLoading || inputValueBuyer_to_lotteries1 === "" && inputValueBuyer_to_lotteries2 === 0}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading || (inputValueBuyer_to_lotteries1 === "" && inputValueBuyer_to_lotteries2 === 0)}
                 >
-                    {isLoading ? 'Loading...' : 'get lottery'}
+                    {isLoading ? 'Loading...' : 'Get Lottery'}
                 </button>
             </div>
 
-
-            <div className="space-y-4">
-
+            {/* Buttons for other actions */}
+            <div className="grid grid-cols-1 gap-4 border border-gray-400 p-4 rounded">
+                <h3 className="font-bold text-lg">Actions</h3>
                 <button
                     onClick={handleGetAllLottery}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Loading...' : 'get all lottery'}
+                    {isLoading ? 'Loading...' : 'Get All Lottery'}
                 </button>
-
-            </div>
-
-
-
-            <div className="space-y-4">
-
                 <button
                     onClick={handleGetMetadata}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Loading...' : 'get metadata'}
+                    {isLoading ? 'Loading...' : 'Get Metadata'}
                 </button>
-
-            </div>
-
-
-
-            <div className="space-y-4">
-
                 <button
                     onClick={handelStartLottery}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Loading...' : 'start lottery'}
+                    {isLoading ? 'Loading...' : 'Start Lottery'}
                 </button>
-
             </div>
 
-
-
-            <div className="space-y-4">
+            {/* Input and Button for buying a lottery */}
+            <div className="space-y-4 border border-gray-400 p-4 rounded">
+                <h3 className="font-bold text-lg">Buy Lottery</h3>
                 <input
                     type="number"
                     value={inputValueBuyLotter1}
                     onChange={(e) => setInputValueBuyLotter1(Number(e.target.value))}
-                    className="mt-4 p-2 border border-gray-300 rounded text-black"
+                    className="p-2 border border-gray-300 rounded text-black w-full"
                     placeholder="Enter lottery number"
                 />
                 <button
                     onClick={handleBuyLottery}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Loading...' : 'buy lottery'}
+                    {isLoading ? 'Loading...' : 'Buy Lottery'}
                 </button>
-
             </div>
 
             {/* Display contract data */}
-            {contractData && (
-                <div className="mt-4 text-white">
-                    <h3>Contract Response:</h3>
-                    <pre>{contractData}</pre>
-                </div>
-            )}
+
+            <div className="border border-gray-400 p-4 rounded text-white">
+                <h3 className="font-bold text-lg mb-2">Contract Response:</h3>
+                <pre className="bg-gray-800 p-4 rounded text-white min-h-[200px] max-h-[400px] overflow-y-auto whitespace-pre-wrap">
+                    {contractData}
+                </pre>
+            </div>
+
         </div>
-
-
-
-
 
     );
 };
 
-export default ContractInteraction;
+export  {TestLotteryContract};
