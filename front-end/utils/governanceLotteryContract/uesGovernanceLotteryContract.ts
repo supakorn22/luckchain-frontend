@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import getSigner from "../getSigner";
 import CONTRACT_ABI from "./ABI.json";
 import { get } from "http";
@@ -8,7 +8,7 @@ import getBalance from '../getBalance';
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
-  ADDRESS: "0x6F2ced7Ed9BD2284e565eEe95A9Dd4f56e8539aE",
+  ADDRESS: "0x0E80397d98eaA57944cF291Da6121Fd12bd41EbB",
   ABI: CONTRACT_ABI,
 };
 
@@ -16,10 +16,22 @@ export const CONTRACT_CONFIG = {
 
 // Contract utility functions
 const contractUtils = {
+
+  contractAddress: CONTRACT_CONFIG.ADDRESS,
+
+
   async getContractInstance() {
     const signer = await getSigner();
     if (!signer) throw new Error("Signer not found");
     return new ethers.Contract(CONTRACT_CONFIG.ADDRESS, CONTRACT_CONFIG.ABI, signer);
+  },
+
+  setContractAddress(newAddress : string) {
+    if (ethers.isAddress(newAddress)) {
+      this.contractAddress = newAddress;
+    } else {
+      throw new Error("Invalid address");
+    }
   },
 
   async buyer_to_lotteries(buyerAddress: string, lotteryNumber: number): Promise<string> {

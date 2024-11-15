@@ -6,4 +6,10 @@ interface LotteriesMetadata {
     balance: number;
   }
 
-export type { LotteriesMetadata };
+interface wildcardDealerLottery {
+    tickerPrice: number;
+    prizeAmount: number;
+    balance: number;
+}
+
+export type { LotteriesMetadata,wildcardDealerLottery };
