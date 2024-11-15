@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { IHomePage } from './HomePage.type';
 import useWeb3 from '@hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
-import  TestContract from '@components/testContract/testContract';
+import  TestContract from '@components/testContract/testLotteryContract';
 
 const HomePage: FC<IHomePage> = () => {
 
