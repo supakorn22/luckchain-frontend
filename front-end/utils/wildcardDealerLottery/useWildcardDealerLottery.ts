@@ -53,7 +53,7 @@ const contractUtils = {
 
         try{
             const contract = await this.getContractInstance();
-            const governanceAddress = await contract.governance();
+            const governanceAddress = await contract.governanceLotteryAddress();
             return governanceAddress
 
         }
@@ -105,7 +105,7 @@ const contractUtils = {
                     throw new Error("Invalid digit")
                 }
                 const contract = await this.getContractInstance();
-                const prize = await contract.prize(digit);
+                const prize = await contract.prizeWildcards(digit);
                 return prize
             }
             catch(error){
@@ -119,7 +119,7 @@ const contractUtils = {
           const contract = await this.getContractInstance();
     
           // Call the mapping function on the smart contract
-          let lotteries: (number[])[] = await contract.getCustomerLottery(buyerAddress);
+          let lotteries: (number[])[] = await contract.getCustomeTicket(buyerAddress);
     
           
           let formattedLotteries: string[] = lotteries.map((lottery) => {
@@ -158,6 +158,7 @@ const contractUtils = {
 
       async buyLottery(lotteryNumber: string) {
 
+        
         if (lotteryNumber.length !== 6) {
           throw new Error('Invalid lottery number. It must have 6 digits.');
         }

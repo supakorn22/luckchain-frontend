@@ -7,7 +7,7 @@ import useWeb3 from '@hooks/useWeb3';
 const TestLotteryContract: React.FC = () => {
 
     const { accounts } = useWeb3();  // Assuming useWeb3() provides the accounts
-    const buyerAddress = accounts[0]?.address; // Use the first account address as buyer address
+    const userAddress = accounts[0]?.address; // Use the first account address as buyer address
 
 
 
@@ -46,7 +46,7 @@ const TestLotteryContract: React.FC = () => {
     const handleGetAllLottery = async () => {
         setIsLoading(true);
         try {
-            const txHash = await useTestContract.getUserAllLottery(buyerAddress);
+            const txHash = await useTestContract.getUserAllLottery(userAddress);
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
@@ -66,7 +66,7 @@ const TestLotteryContract: React.FC = () => {
         try {
             const txHash = await useTestContract.getMetaData();
             console.log(txHash);
-            setContractData(`Transaction successful. Hash:${txHash}`);
+            setContractData(`Transaction successful. Hash:${JSON.stringify(txHash)}`);
         } catch (error) {
             console.error("Error interacting with contract:", error);
             if (error instanceof Error) {
