@@ -32,11 +32,11 @@ const contractUtils = {
       }
     },
 
-    async deploy(randomContractAddress: string,tickerPrice :number,prizeAmount :number) : Promise<string> {
+    async deploy(governanceLotteryAddress: string,prizeWildcards: boolean [],tickerPrice :number,prizeAmount :number) : Promise<string> {
       try {
         const signer = await getSigner();
         const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
-        const contract = await factory.deploy(randomContractAddress,tickerPrice,prizeAmount);
+        const contract = await factory.deploy(governanceLotteryAddress,prizeWildcards,tickerPrice,prizeAmount);
         await contract.waitForDeployment();
         const deployAddress =  await contract.getAddress();
         this.setContractAddress(deployAddress);
