@@ -137,6 +137,23 @@ const TestWildcardContract: React.FC = () => {
         }
     };
 
+    const handlePayPrize = async () => {
+        setIsLoading(true);
+        try {
+            const txHash = await useWildcardContract.payPrize();
+            setContractData(String(txHash));
+        } catch (error) {
+            console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleBuyLottery = async () => {
         setIsLoading(true);
         try {
@@ -261,6 +278,13 @@ const TestWildcardContract: React.FC = () => {
                     disabled={isLoading}
                 >
                      {isLoading ? 'Loading...' : 'Get All Lottery'}
+                </button>
+                <button
+                    onClick={handlePayPrize}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading}
+                >
+                     {isLoading ? 'Loading...' : 'Pay Prize'}
                 </button>
             </div>
 

@@ -149,6 +149,60 @@ const TestLotteryContract: React.FC = () => {
 
     }
 
+    const handelEndLottery = async () => {
+        setIsLoading(true);
+        try {
+            const txHash = await useTestContract.endLottery();
+            console.log(txHash);
+            setContractData(`Transaction successful. Hash:${txHash}`);
+        } catch (error) {
+            console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handlePayPrize = async () => {
+        setIsLoading(true);
+        try {
+            const txHash = await useTestContract.payPrize();
+            console.log(txHash);
+            setContractData(`Transaction successful. Hash:${txHash}`);
+        } catch (error) {
+            console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleArchiveLottery = async () => {
+        setIsLoading(true);
+        try {
+            const txHash = await useTestContract.archiveLottery();
+            console.log(txHash);
+            setContractData(`Transaction successful. Hash:${txHash}`);
+        } catch (error) {
+            console.error("Error interacting with contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
         <div className="flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 space-y-2">
 
@@ -261,6 +315,28 @@ const TestLotteryContract: React.FC = () => {
                 >
                     {isLoading ? 'Loading...' : 'Start Lottery'}
                 </button>
+                <button
+                    onClick={handelEndLottery}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Loading...' : 'End Lottery'}
+                </button>
+                <button
+                    onClick={handlePayPrize}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Loading...' : 'Pay Prize'}
+                </button>
+                <button
+                    onClick={handleArchiveLottery}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Loading...' : 'Archive Lottery'}
+                </button>
+                
             </div>
 
             {/* Input and Button for buying a lottery */}
