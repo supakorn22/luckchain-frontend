@@ -9,8 +9,9 @@ import getBalance from '../getBalance';
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
-  ADDRESS: process.env.NEXT_PUBLIC_CONTRACT1 || "",
+  ADDRESS: process.env.NEXT_PUBLIC_CONTRACT1_ADDRESS  || "",
   ABI: CONTRACT_ABI,
+  BYTECODE: process.env.NEXT_PUBLIC_CONTRACT1_BYTECODE || "",
 };
 
 
@@ -33,6 +34,22 @@ const contractUtils = {
     } else {
       throw new Error("Invalid address");
     }
+  },
+  async deploy(randomContractAddress: string,tickerPrice :number,prizeAmount :number) : Promise<string> {
+    try {
+      const signer = await getSigner();
+      const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
+      const contract = await factory.deploy(randomContractAddress,tickerPrice,prizeAmount);
+      await contract.waitForDeployment();
+      const deployAddress =  await contract.getAddress();
+      this.setContractAddress(deployAddress);
+      return deployAddress;
+
+    } catch (error) {
+      console.error("Error deploying contract:", error);
+      throw error;
+    }
+
   },
 
   async buyer_to_lotteries(buyerAddress: string, lotteryNumber: number): Promise<string> {

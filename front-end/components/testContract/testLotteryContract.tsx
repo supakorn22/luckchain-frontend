@@ -20,6 +20,10 @@ const TestLotteryContract: React.FC = () => {
     const [inputValueBuyLotter1, setInputValueBuyLotter1] = useState<number | 0>(0);
     const [inputValueChangeAddress1, setInputValueChangeAddress1] = useState<string | "">("");
     const [currentContractAddress, setCurrentContractAddress] = useState<string | "">(useTestContract.contractAddress);
+    const [inputValueDeploy1, setInputValueDeploy1] = useState<number>(0);
+    const [inputValueDeploy2, setInputValueDeploy2] = useState<number>(0);
+
+
 
     // Function to interact with the contract
     const handleBuyer_to_lotteries = async () => {
@@ -124,38 +128,87 @@ const TestLotteryContract: React.FC = () => {
         console.log("Current contract address:", useTestContract.contractAddress);
     }
 
+    const handleDeploy = async () => {
+        setIsLoading(true);
+        try {
+            const randomAddress = process.env.NEXT_PUBLIC_RANDOM_ADDRESS || "";
+            const deployAddress = await useTestContract.deploy(randomAddress, inputValueDeploy1, inputValueDeploy2)
+            setCurrentContractAddress(deployAddress);
+
+        }
+        catch (error) {
+            console.error("Error deploying contract:", error);
+            if (error instanceof Error) {
+                setContractData(`Error: ${error.message}`);
+            } else {
+                setContractData('An unknown error occurred.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+
+    }
+
     return (
         <div className="flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 space-y-2">
 
+
+
             {/* Input and Button for changing contract address */}
             <div className="space-y-4 border border-gray-400 p-4 rounded">
-        <h3 className="font-bold text-lg">Contract Address</h3>
-        <p className="bg-gray-100 p-2 border border-gray-300 rounded text-black w-full">
-            {currentContractAddress || "No address set"}
-        </p>
-        <input
-            type="text"
-            value={inputValueChangeAddress1}
-            onChange={(e) => setInputValueChangeAddress1(e.target.value)}
-            className="p-2 border border-gray-300 rounded text-black w-full"
-            placeholder="Enter new contract address"
-        />
-        <div className="flex space-x-4">
-            <button
-                onClick={handleLotteryAddress}
-                className="bg-blue-500 text-white py-2 px-4 rounded w-full"
-                disabled={isLoading || inputValueChangeAddress1 === ""}
-            >
-                {isLoading ? 'Loading...' : 'Change Address'}
-            </button>
-            <button
-                onClick={handleGetContractAddress}
-                className="bg-blue-500 text-white py-2 px-4 rounded w-full"
-            >
-                Get Contract Address
-            </button>
-        </div>
-    </div>
+                <h3 className="font-bold text-lg">Contract Address</h3>
+                <p className="bg-gray-100 p-2 border border-gray-300 rounded text-black w-full">
+                    {currentContractAddress || "No address set"}
+                </p>
+                <input
+                    type="text"
+                    value={inputValueChangeAddress1}
+                    onChange={(e) => setInputValueChangeAddress1(e.target.value)}
+                    className="p-2 border border-gray-300 rounded text-black w-full"
+                    placeholder="Enter new contract address"
+                />
+                <div className="flex space-x-4">
+                    <button
+                        onClick={handleLotteryAddress}
+                        className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                        disabled={isLoading || inputValueChangeAddress1 === ""}
+                    >
+                        {isLoading ? 'Loading...' : 'Change Address'}
+                    </button>
+                    <button
+                        onClick={handleGetContractAddress}
+                        className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    >
+                        Get Contract Address
+                    </button>
+                </div>
+            </div>
+
+            {/* Input and Button for deploying contract */}
+            <div className="space-y-4 border border-gray-400 p-4 rounded">
+                <h3 className="font-bold text-lg">Deploy Contract</h3>
+                <input
+                    type="number"
+                    value={inputValueDeploy1}
+                    onChange={(e) => setInputValueDeploy1(Number(e.target.value))}
+                    className="p-2 border border-gray-300 rounded text-black w-full"
+                    placeholder="Enter lottery number"
+                />
+                <input
+                    type="number"
+                    value={inputValueDeploy2}
+                    onChange={(e) => setInputValueDeploy2(Number(e.target.value))}
+                    className="p-2 border border-gray-300 rounded text-black w-full"
+                    placeholder="Enter lottery number"
+                />
+                <button
+                    onClick={handleDeploy}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Loading...' : 'Deploy Contract'}
+                </button>
+            </div>
 
 
             {/* Input and Button for storing data */}
@@ -243,4 +296,4 @@ const TestLotteryContract: React.FC = () => {
     );
 };
 
-export  {TestLotteryContract};
+export { TestLotteryContract };
