@@ -6,9 +6,10 @@ import useWeb3 from '@hooks/useWeb3';
 import { LotteriesMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 
+
 // Constants and configuration
 export const CONTRACT_CONFIG = {
-  ADDRESS: "0x0E80397d98eaA57944cF291Da6121Fd12bd41EbB",
+  ADDRESS: process.env.NEXT_PUBLIC_CONTRACT1 || "",
   ABI: CONTRACT_ABI,
 };
 
@@ -178,7 +179,11 @@ const contractUtils = {
     return price
   },
 
-  async buyLottery(lotteryNumber: number) {
+  async buyLottery(lotteryNumber: string) {
+    if (lotteryNumber.length !== 6) {
+      throw new Error('Invalid lottery number. It must have 6 digits.');
+    }
+
     try {
       // Step 1: Get the contract instance
       const contract = await this.getContractInstance();

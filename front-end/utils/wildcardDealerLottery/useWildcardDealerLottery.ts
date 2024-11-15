@@ -3,12 +3,12 @@ import getSigner from "../getSigner";
 import CONTRACT_ABI from "./ABI.json";
 import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
-import { LotteriesMetadata,wildcardDealerLottery } from '@interfaces/contract';
+import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
-  ADDRESS: "0x0E80397d98eaA57944cF291Da6121Fd12bd41EbB",
+  ADDRESS: process.env.NEXT_PUBLIC_CONTRACT1 || "",
   ABI: CONTRACT_ABI,
 };
 
@@ -46,7 +46,7 @@ const contractUtils = {
 
     },
 
-    async getMetaData(): Promise<wildcardDealerLottery> {
+    async getMetaData(): Promise<WildcardDealerMetadata> {
         try {
           // Call the metadata function from the contract
           const contract = await this.getContractInstance();
@@ -131,6 +131,62 @@ const contractUtils = {
         }
     
       },
+
+      async getLotteryPrice(): Promise<number> {
+        const metadata = await this.getMetaData();
+        const price = metadata.tickerPrice;
+        return price
+      },
+
+      async buyLottery(lotteryNumber: string) {
+
+        if (lotteryNumber.length !== 6) {
+          throw new Error('Invalid lottery number. It must have 6 digits.');
+        }
+
+
+
+        try {
+          // Step 1: Get the contract instance
+          const contract = await this.getContractInstance();
+    
+          // Step 2: Retrieve the lottery price
+          const price = await this.getLotteryPrice();
+    
+          // Step 3: Ensure the user has enough balance or ETH to buy the ticket
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          const userAddress = accounts[0];
+    
+          const balance = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [userAddress, 'latest'],
+          });
+    
+    
+    
+          // Check if user balance is enough
+          if (balance < price / 10 ** 18) {
+            throw new Error('Insufficient balance to buy the lottery ticket.');
+          }
+          
+
+          const lotteryNumberFormated = lotteryNumber.split('').map(Number);
+
+          // Step 4: Send the transaction to buy the lottery ticket
+          const tx = await contract.buyLottery(lotteryNumberFormated, {
+            from: userAddress,
+            value: price,
+          });
+    
+          console.log('Lottery ticket purchased successfully:', tx);
+          return tx;
+    
+        } catch (error) {
+          console.error('Error purchasing lottery ticket:', error);
+          throw error;
+        }
+      }
+    
     
 
 

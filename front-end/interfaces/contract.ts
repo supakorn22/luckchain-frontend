@@ -6,10 +6,28 @@ interface LotteriesMetadata {
     balance: number;
   }
 
-interface wildcardDealerLottery {
+interface WildcardDealerMetadata {
     tickerPrice: number;
     prizeAmount: number;
     balance: number;
 }
 
-export type { LotteriesMetadata,wildcardDealerLottery };
+interface GovernanceLottery {
+  editor: string;
+  owner: string;
+  contractAddress: string;
+  tickerPrice: number;
+  ptizeAmount: number;
+}
+
+interface WildcardDealerLottery {
+  editor: string;
+  owner: string;
+  contractAddress: string;
+  tickerPrice: number;
+  prizeAmount: number;
+  prizeWildcards: boolean[];
+}
+
+
+export type { LotteriesMetadata,WildcardDealerMetadata,GovernanceLottery,WildcardDealerLottery };

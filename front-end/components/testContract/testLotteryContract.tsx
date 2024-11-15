@@ -75,7 +75,7 @@ const ContractInteraction: React.FC = () => {
     const handleBuyLottery = async () => {
         setIsLoading(true);
         try {
-            const txHash = await useTestContract.buyLottery(inputValueBuyLotter1);
+            const txHash = await useTestContract.buyLottery(String(inputValueBuyLotter1));
             console.log(txHash);
             setContractData(`Transaction successful. Hash:${txHash}`);
         } catch (error) {
