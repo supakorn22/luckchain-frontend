@@ -48,11 +48,15 @@ To get started with the LuckChain Lottery, follow these steps:
 3. Create a `.env.local` file and add your environment variables:
 
         
-        NEXT_PUBLIC_INFURA_ID=your_infura_project_id
-        NEXT_PUBLIC_CONTRACT_ADDRESS=your_smart_contract_address
+        NEXT_PUBLIC_CONTRACT1_ADDRESS = 
+        NEXT_PUBLIC_CONTRACT2_ADDRESS = 
+        NEXT_PUBLIC_CONTRACT3_ADDRESS = 
+        NEXT_PUBLIC_CONTRACT1_BYTE =
+        NEXT_PUBLIC_CONTRACT2_BYTE =
+        NEXT_PUBLIC_CONTRACT3_BYTE
         
 
-4. Run the development server:
+5. Run the development server:
    
         
         npm run dev
