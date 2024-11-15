@@ -56,10 +56,113 @@ const contractUtils = {
         }
 
     },
-    // async searchGovernanceByPriceRange(minPrice: number, maxPrice: number): Promise<GovernanceLottery[]> {
 
 
-    // },
+
+    async searchGovernanceByPriceRange(minPrice: number, maxPrice: number): Promise<GovernanceLottery[]> {
+
+        try{
+            const contract = await this.getContractInstance();
+            const governanceLottery = await contract.searchGovernanceByPriceRange(minPrice,maxPrice);
+            return governanceLottery
+
+        }
+        catch(error){
+            console.error("Error search governance lottery by price:", error);
+            throw error;
+        }
+
+    },
+
+    async searchGovernanceByRewardRange(minReward: number, maxReward: number): Promise<GovernanceLottery[]> {
+
+        try{
+            const contract = await this.getContractInstance();
+            const governanceLottery = await contract.searchGovernanceByRewardRange(minReward,maxReward);
+            return governanceLottery
+
+        }
+        catch(error){
+            console.error("Error search governance lottery by reward:", error);
+            throw error;
+        }
+
+    },
+
+    async searchWildcardDealerByPriceRange(minPrice: number, maxPrice: number): Promise<WildcardDealerLottery[]> {
+
+        try{
+            const contract = await this.getContractInstance();
+            const governanceLottery = await contract.searchWildcardDealerByPriceRange(minPrice,maxPrice);
+            return governanceLottery
+
+        }
+        catch(error){
+            console.error("Error search wildcard dealer lottery by price:", error);
+            throw error;
+        }
+
+    },
+    async searchWildcardDealerByRewardRange(minReward: number, maxReward: number): Promise<WildcardDealerLottery[]> {
+
+        try{
+            const contract = await this.getContractInstance();
+            const governanceLottery = await contract.searchWildcardDealerByRewardRange(minReward,maxReward);
+            return governanceLottery
+
+        }
+        catch(error){
+            console.error("Error search wildcard dealer lottery by reward:", error);
+            throw error;
+        }
+
+    },
+    async searchWildcardDealerByWildcard(prizeWildcards:boolean[]): Promise<WildcardDealerLottery[]> {
+
+        try{
+            const contract = await this.getContractInstance();
+            const governanceLottery = await contract.searchWildcardDealerByWildcard(prizeWildcards);
+            return governanceLottery
+
+        }
+        catch(error){
+            console.error("Error search wildcard dealer lottery by reward:", error);
+            throw error;
+        }
+
+    },
+
+
+    async setOwner(newOwner: string) {
+        try {
+            const contract = await this.getContractInstance();
+            await contract.setOwner(newOwner);
+        } catch (error) {
+            console.error("Error setting owner:", error);
+            throw error;
+        }
+    },
+
+    async appendGovernanceLottery(tickerPrice : number, prizeAmount: number,contractAddress : string,owner : string) {
+            try {
+                const contract = await this.getContractInstance();
+                await contract.appendGovernanceLottery(tickerPrice,prizeAmount,contractAddress,owner);
+            } catch (error) {
+                console.error("Error appending governance lottery:", error);
+                throw error;
+            }
+
+
+    },
+    async appendWildcardDealerLottery(tickerPrice : number, prizeAmount: number,contractAddress : string,owner : string,editor :string,prizeWildcards : boolean[]) {
+        try {
+            const contract = await this.getContractInstance();
+            await contract.appendWildcardDealerLottery(tickerPrice,prizeAmount,contractAddress,owner,editor,prizeWildcards);
+        } catch (error) {
+            console.error("Error appending wildcard dealer lottery:", error);
+            throw error;
+        }
+    },
 }
 
 export default contractUtils;
