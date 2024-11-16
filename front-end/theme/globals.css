@@ -1,7 +1,11 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+@import "tailwindcss/base";
 
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
 * {
 	box-sizing: border-box;
 }
@@ -16,7 +20,7 @@ body {
 	margin: 0 auto;
 	max-width: 1600px;
 
-	background-color: #121314;
+	background-color: #ffffff;
 }
 
 html {
