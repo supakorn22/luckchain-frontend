@@ -1,0 +1,1 @@
+export {MyLottery as default} from '@components/pages/myLottery/MyLottery';
