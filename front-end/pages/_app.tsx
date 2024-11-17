@@ -22,7 +22,7 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 					content='Starter to create Dapps with Next, React and Ethers. No longer waste valuable time building your project structure. Start coding is easy as npx create-nextjs-dapp'
 				/>
 
-				<meta name='theme-color' content='#1E1F20' />
+				<meta name='theme-color' content='#FFFFFF' />
 			</Head>
 
 			<ResponsiveProvider>
