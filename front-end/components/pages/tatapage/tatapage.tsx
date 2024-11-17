@@ -1,6 +1,6 @@
 import Meta from '@components/common/Meta';
 import { FC } from 'react';
-import { IHomePage } from './HomePage.type';
+import { IHomePage } from '../home/HomePage/HomePage.type';
 import useWeb3 from '@hooks/useWeb3';
 import { ethers } from "ethers";
 
@@ -20,7 +20,15 @@ const HomePage: FC<IHomePage> = () => {
 			/>
 			</div>
 
-			
+			<div className='flex flex-col justify-evenly h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
+				{/* <div className='flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 '>
+					<span className='text-white'>text-whit {address}</span>
+					 </div>*/}
+				
+				<ShowPrevDraw/>	
+				<GovContract/>
+				<DealerContract/>
+			</div>
 		</div>
 	);
   };
