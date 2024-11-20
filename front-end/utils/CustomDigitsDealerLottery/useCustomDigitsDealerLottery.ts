@@ -5,6 +5,7 @@ import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
 import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
+import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 
 
 // Constants and configuration
@@ -33,11 +34,11 @@ const contractUtils = {
         }
     },
 
-    async deploy(governanceLotteryAddress: string,prizeWildcards: boolean [],tickerPrice :number,prizeAmount :number) : Promise<string> {
+    async deploy(governmentLotteryAddress: string,lotteryTicketAddress: string ,winningPrize :number,targetDigits :number [] ) : Promise<string> {
         try {
           const signer = await getSigner();
           const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
-          const contract = await factory.deploy(governanceLotteryAddress,prizeWildcards,tickerPrice,prizeAmount);
+          const contract = await factory.deploy(governmentLotteryAddress,lotteryTicketAddress,winningPrize,targetDigits);
           await contract.waitForDeployment();
           const deployAddress =  await contract.getAddress();
           this.setContractAddress(deployAddress);
@@ -49,6 +50,26 @@ const contractUtils = {
         }
     
       },
+
+      async sell(governmentLotteryAddress : string,winningPrize :number,targetDigits :number [] ,ticketPrize :number)  {
+
+        try {
+        const countDigits = targetDigits.length;
+
+        const ticketAddress = await useLotteryTicket.deploy(9999999,ticketPrize,countDigits);  
+        
+        const   address= await this.deploy(governmentLotteryAddress,ticketAddress,winningPrize,targetDigits);
+
+        useLotteryTicket.setContractAddress(ticketAddress);
+
+        useLotteryTicket.setMinter(address);
+        }
+        catch(error){
+            console.error("Error selling:", error);
+            throw error;
+        }
+
+      }
 
 
 

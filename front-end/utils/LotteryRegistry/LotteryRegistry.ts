@@ -78,6 +78,25 @@ const contractUtils = {
             }
     },
 
+    async queryById (type :number,id : number) {
+
+        try{
+            const contract = await this.getContractInstance();
+            const result = await
+            contract.queryById(type,id);
+            return result;
+        }
+        catch(error){
+            console.error("Error queryById", error);
+            throw error;
+        }
+    }
+
+
+
+
+
+
 
 
 };

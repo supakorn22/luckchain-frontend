@@ -5,6 +5,7 @@ import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
 import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
+import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 
 
 // Constants and configuration
@@ -33,11 +34,11 @@ const contractUtils = {
         }
     },
 
-    async deploy(maxSet: number,fallbackTicketPrice: number ,digits :number) : Promise<string> {
+    async deploy(governmentLotteryAddress : string,lotteryTicketAddress: string ,winningPrize :number ) : Promise<string> {
         try {
           const signer = await getSigner();
           const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
-          const contract = await factory.deploy(maxSet,fallbackTicketPrice,digits);
+          const contract = await factory.deploy(governmentLotteryAddress,lotteryTicketAddress,winningPrize);
           await contract.waitForDeployment();
           const deployAddress =  await contract.getAddress();
           this.setContractAddress(deployAddress);
@@ -50,35 +51,7 @@ const contractUtils = {
     
       },
 
-      async getListingPrice() : Promise<number> {
-        try{
-            const contract = await this.getContractInstance();
-            const listingPrice = await contract.getListingPrice();
-            return listingPrice;
-        }
-        catch(error){
-            console.error("Error getting listing price:", error);
-            throw error;
-        }
-
-      },
-
-      async setMinter(address : string) {
-        try{
-            const contract = await this.getContractInstance();
-            await contract.setMinter(address);
-        }
-        catch(error){
-            console.error("Error setting minter:", error);
-            throw error;
-        }
-
-      }
+      
 
 
-
-
-
-}
-
-export default contractUtils;
+};
