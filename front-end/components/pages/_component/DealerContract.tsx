@@ -3,20 +3,55 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { ThemeProvider } from '@mui/material/styles';
 import Slider from '@mui/material/Slider';
+import {Dealer} from '@components/pages/_component/DealerComponent'
 
 export default function DealerContract() {
   const [expandedIndex, setExpandedIndex] = useState<Number>(-1);
 
   const items2 = Array(24).fill('DUMMY DEALER');
+  const dummy_dealer : Dealer[] = [
+    {
+      address: "0xFFFFFFFFFF",
+      price: "400$",
+      rule: "use lottery position 3 , 4 from governance",
+      reward: "10,000$",
+      current_buyer: "17"
+    },
+    {
+      address: "0xFFFFFFFFAA",
+      price: "2$",
+      rule: "use lottery position 1 from governance",
+      reward: "100,000$",
+      current_buyer: "711"
+    },
+    {
+      address: "0xFFFFFFFFFF",
+      price: "400$",
+      rule: "use lottery position 6 from governance",
+      reward: "10,000$",
+      current_buyer: "17"
+    },
+    {
+      address: "0xFFFFFFFFAA",
+      price: "2$",
+      rule: "use lottery position 2,4,5,6 from governance",
+      reward: "100,000$",
+      current_buyer: "711"
+    }
+  ]
   const items = ['contract1' , 'contract2' , 'contract1','contract1','contract1','contract1','contract1','contract1']
   
   const filter_number = ['2 number','3 number','4 number','5 number','6 number']
   const [buttonStates, setButtonStates] = useState<boolean[]>([false, false, false, false, false]);
+  
+  const [buttonDealer, setButtonDealer] = useState(Array(dummy_dealer.length).fill(false));
+
     const handleButtonClick = (index: number) => {
       setButtonStates((prevStates) =>
         prevStates.map((state, i) => (i === index ? !state : state))
       );
     };
+
   return (
     <>
     
@@ -29,7 +64,7 @@ export default function DealerContract() {
           key={index}
           onClick={() => handleButtonClick(index)}
           className={`inline-block rounded-[33px]  border-2 border-[#004fff] bg-white text-[15px] text-[#004fff] p-2 flex items-center justify-center m-2
-          ${isClick ? "text-[#fff] bg-[#004fff]" : ""}`}>
+          ${isClick ? "text-[#fff] bg-[#00f]" : ""}`}>
             {filter_number[index]}
           </button>
         ))}
@@ -48,16 +83,29 @@ export default function DealerContract() {
             <text>DEALER CONTRACT</text>
         </div>
         <div className='grid grid-cols-4 auto-rows-[minmax(100px,_auto)] gap-4 my-5 h-[800px]'>
-          {items2.map((item, index) => (
+          {dummy_dealer.map((item, index) => (
                 <div 
                 key = {index}
                 className={`transition-all duration-300 ease-in-out transform
                 relative flex bg-[#ffffff] p-2 rounded-[10px] shadow-md
                 ${expandedIndex == index ? 'bg-[#f0f0f0f0] row-span-3 col-span-4 shadow-lg ':''}
+              
                 `}>
-                  <text>{item}</text>
+                <div className='flex flex-col'>
+                  <text className='font-bold'>DUMMY DEALER</text>
+                  <br></br>
+                  {expandedIndex != -1 &&
+                    <div className='flex flex-col'>
+                      <li>ADDRESS : {item.address}</li>
+                      <li>PRICE : {item.price}</li>
+                      <li>RULE : {item.rule}</li>
+                      <li>REWARD : {item.reward}</li>
+                      <li>CURRENT BUYER : {item.current_buyer}</li>
+                    </div>
+                  }
+                </div>
                   <button className='absolute right-2 bottom-2 text-[#004fff] '
-                  onClick={()=>setExpandedIndex(expandedIndex == index ? -1 : index)}>see more...</button>
+                  onClick={()=>{setExpandedIndex(expandedIndex == index ? -1 : index); } }>see more...</button>
                 </div>
           ))}
         </div>
