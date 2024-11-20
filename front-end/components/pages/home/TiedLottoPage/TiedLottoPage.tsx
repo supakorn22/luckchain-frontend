@@ -40,7 +40,7 @@ export const TiedLottoPage = () => {
             key={index}
             onClick={() => handleButtonClick(index)}
             className={`flex bg-[#ffffff] w-[60px] h-[90px] justify-self-center flex items-center justify-center rounded-[10px] text-[#000000] 
-            ${isClick ? "bg-[#FFC73A]" : "" }`}>
+            ${isClick ? "bg-[#ffc73a]" : "bg-[#ffffff]" }`}>
               {index+1}
             </button>
           ))}
@@ -48,7 +48,7 @@ export const TiedLottoPage = () => {
       <div className='flex flex-col  my-3 mb-10'>
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name" className='text-[#fff]'>Price</label>
+            <label htmlFor="name" className='text-[#ffffff]'>Price</label>
           </div>
           <div>
             <input
@@ -66,7 +66,7 @@ export const TiedLottoPage = () => {
             />
           </div>
           <div>
-            <label htmlFor="shortInfo" className='text-[#fff]'>Reward</label>
+            <label htmlFor="shortInfo" className='text-[#ffffff]'>Reward</label>
           </div>
           <div>
             <input

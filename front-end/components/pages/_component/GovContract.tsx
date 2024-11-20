@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 
 export default function GovContract() {
   const items = ['?','?','?','?','?','?']
+  const items2 = Array(6).fill('💸')
   const router = useRouter();
   const handleNavigation = () => {
     router.push('/buylottopage')
@@ -16,7 +17,7 @@ export default function GovContract() {
           <text>GOVERNANCE CONTRACT</text>
       </div>
       <div className='grid grid-cols-6 gap-4 w-flex h-[100px] pr-[70px] pl-[70px] pt-5  '>
-          {items.map((item, index) => (
+          {items2.map((item, index) => (
               <div className='flex bg-[#ffffff] w-[60px] h-[90px] justify-self-center flex items-center justify-center rounded-[10px]'>
                 {item}
               </div>

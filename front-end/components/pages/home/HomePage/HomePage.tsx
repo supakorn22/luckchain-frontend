@@ -16,9 +16,9 @@ const HomePage: FC<IHomePage> = () => {
 
 
 
-	const topWildCards = [...wildCards]
-    .sort((a, b) => b.prizePool - a.prizePool)
-    .slice(0, 4);
+	// const topWildCards = [...wildCards]
+    // .sort((a, b) => b.prizePool - a.prizePool)
+    // .slice(0, 4);
 
 	return (
 		<div className='flex flex-col my-5'>
