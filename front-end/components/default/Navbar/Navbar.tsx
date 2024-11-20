@@ -9,9 +9,9 @@ import Link from "next/link";
 
 const Navbar = () => {
 	return (
-		<nav className='relative fixed left-0 top-0 flex justify-end w-full p-3 sm:justify-between md:p-4  z-99 bg-cyan-500'>
+		<nav className='relative fixed left-0 top-0 flex justify-end w-full p-3 sm:justify-between md:p-4  z-99 bg-[#0044ff]'>
 			<Link href='/'>
-			<Text type={ETextType.h1} size={ESize.s} className='hidden sm:inline-block text-[#0044ff]'>
+			<Text type={ETextType.h1} size={ESize.s} className='hidden sm:inline-block text-[#fff]'>
 				LuckChain
 			</Text>
 			</Link>
