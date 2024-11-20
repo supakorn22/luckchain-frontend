@@ -10,15 +10,7 @@ import WildCardLotteryList from './components/WildCardLotteryList';
 import GovContract from '@components/pages/_component/GovContract';
 import DealerContract from '@components/pages/_component/DealerContract';
 import ShowPrevDraw from '@components/pages/_component/ShowPrevDraw';
-
-const wildCards = [
-    { digits: '010110', ownerId: 'user123', buyerCount: 25, prizePool: 1000 },
-    { digits: '110011', ownerId: 'user456', buyerCount: 40, prizePool: 2000 },
-    { digits: '101101', ownerId: 'user789', buyerCount: 30, prizePool: 1500 },
-    { digits: '011011', ownerId: 'user321', buyerCount: 35, prizePool: 3000 },
-    { digits: '111000', ownerId: 'user654', buyerCount: 20, prizePool: 1200 },
-  ];
-
+import CreateDealerContract from '@components/pages/_component/CreateDealerContract';
 
 const HomePage: FC<IHomePage> = () => {
 
@@ -37,8 +29,16 @@ const HomePage: FC<IHomePage> = () => {
 			/>
 			</div>
 
-			<LotteryLastRound date="2024-11-18" roundNumber={1} lotteryNumber={'123456'} buyerCount={10} poolPrize={100} />
-			<WildCardLotteryList wildCards={topWildCards} />
+			<div className='flex flex-col justify-evenly h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
+				{/* <div className='flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 '>
+					<span className='text-white'>text-whit {address}</span>
+					 </div>*/}
+				
+				<ShowPrevDraw/>	
+				<GovContract/>
+				<CreateDealerContract/>
+				<DealerContract/>
+			</div>
 		</div>
 	);
   };
