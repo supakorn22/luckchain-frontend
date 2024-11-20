@@ -1,24 +1,15 @@
 import Meta from '@components/common/Meta';
 import { FC } from 'react';
-import { IHomePage } from './HomePage.type';
+import { IHomePage } from '../home/HomePage/HomePage.type';
 import useWeb3 from '@hooks/useWeb3';
 import { ethers } from "ethers";
-import LotteryLastRound from './components/LotteryLastRound';
-import WildCardLotteryList from './components/WildCardLotteryList';
-
 
 import GovContract from '@components/pages/_component/GovContract';
 import DealerContract from '@components/pages/_component/DealerContract';
 import ShowPrevDraw from '@components/pages/_component/ShowPrevDraw';
-import CreateDealerContract from '@components/pages/_component/CreateDealerContract';
 
 const HomePage: FC<IHomePage> = () => {
 
-
-
-	const topWildCards = [...wildCards]
-    .sort((a, b) => b.prizePool - a.prizePool)
-    .slice(0, 4);
 
 	return (
 		<div className='flex flex-col my-5'>
@@ -36,7 +27,6 @@ const HomePage: FC<IHomePage> = () => {
 				
 				<ShowPrevDraw/>	
 				<GovContract/>
-				<CreateDealerContract/>
 				<DealerContract/>
 			</div>
 		</div>
