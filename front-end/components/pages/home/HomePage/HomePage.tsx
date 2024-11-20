@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 import GovContract from '@components/pages/_component/GovContract';
 import DealerContract from '@components/pages/_component/DealerContract';
 import ShowPrevDraw from '@components/pages/_component/ShowPrevDraw';
+import CreateDealerContract from '@components/pages/_component/CreateDealerContract';
 
 const HomePage: FC<IHomePage> = () => {
 	const { connectWallet, accounts, setIsWalletModalOpen, isWalletModalOpen } = useWeb3();
@@ -38,6 +39,7 @@ const HomePage: FC<IHomePage> = () => {
 				
 				<ShowPrevDraw/>	
 				<GovContract/>
+				<CreateDealerContract/>
 				<DealerContract/>
 			</div>
 		</div>

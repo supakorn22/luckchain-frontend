@@ -1,9 +1,15 @@
+'use client'
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { ThemeProvider } from '@mui/material/styles';
 
 export default function GovContract() {
   const items = ['?','?','?','?','?','?']
+  const router = useRouter();
+  const handleNavigation = () => {
+    router.push('/buylottopage')
+  }
   return (
     <div className='relative flex flex-col bg-[#F2F2F2] h-[512px] p-4 my-3 rounded-[20px] shadow-md z-1'>
       <div className='text-[#004fff] font-bold'>
@@ -17,8 +23,8 @@ export default function GovContract() {
             ))}
       </div>
       <div className='p-10'></div>
-      <button className="absolute right-[10px] bottom-[10px] rounded-[33px] w-[150px] h-[20px] border-2 border-[#004fff] bg-white text-[15px] text-[#004fff] p-4 flex items-center justify-center">
-        Create Contract
+      <button onClick={handleNavigation} className="absolute right-[10px] bottom-[10px] rounded-[33px] w-[150px] h-[20px] border-2 border-[#004fff] bg-white text-[15px] text-[#004fff] p-4 flex items-center justify-center">
+        Buy Lottery
       </button>
     </div>
   );
