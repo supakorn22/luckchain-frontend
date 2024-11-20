@@ -9,7 +9,7 @@ import { promises } from "dns";
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
-    ADDRESS:  process.env.NEXT_PUBLIC_LotteryRegistry_ADDRESS ||"0x9f04b4747e6C3dbC5a9Cad023668160390E49DAA",
+    ADDRESS:  process.env.NEXT_PUBLIC_LotteryRegistry_ADDRESS ||"0x471b9e9f7779D86e7367b936F7E0A2Dc7BAfD2e3",
     ABI: json.abi,
     BYTECODE : json.bytecode
 };
@@ -100,3 +100,5 @@ const contractUtils = {
 
 
 };
+
+export default contractUtils;
