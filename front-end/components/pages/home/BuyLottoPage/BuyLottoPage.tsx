@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
+import useLotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
 
 
 export const BuyLottoPage = () => {
@@ -9,6 +11,9 @@ export const BuyLottoPage = () => {
       buyNum: ''
     });
 
+    
+    
+
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name , value } = event.target;
       setFormValues({
@@ -17,10 +22,34 @@ export const BuyLottoPage = () => {
       });
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log('Form Submitted',formValues.lottoNum,formValues.buyNum)
-    }
+      const ticketNumber = parseInt(formValues.lottoNum, 10);
+      const ticketAmount = parseInt(formValues.buyNum, 10);
+
+      if (isNaN(ticketNumber) || isNaN(ticketAmount)) {
+          alert('Please enter valid numbers.');
+          return;
+      }
+
+      console.log('Form Submitted', ticketNumber, ticketAmount);
+      
+      //check Lottery status
+
+      const metadata = await useLotteryRegistry.getLastGovernmentMetadata()
+      const address = await useLotteryRegistry.getLastGovernmentAddress()
+
+      if(metadata[0]!=1){
+        alert('Lottery now are not avalible cause the last round in process or wait for startup')
+        return;
+      }
+
+      // Call the buy function asynchronously
+      useGovernmentLottery.setContractAddress(address)
+      await useGovernmentLottery.buy(ticketNumber, ticketAmount);
+
+
+  };
 
     return (
       <div className="relative bg-[#004fff] h-full p-3 m-3 flex-col rounded-[10px]">

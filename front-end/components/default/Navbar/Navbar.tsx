@@ -24,11 +24,11 @@ const Navbar = () => {
             />
 			<TopMenuItem
                 title={"Buy lotterys"}
-            	pageRef={"/buylotterys"}
+            	pageRef={"/buylottopage"}
             />
 			<TopMenuItem
                 title={"sell lotterys"}
-            	pageRef={"/selllotterys"}
+            	pageRef={"/tiedlottopage"}
             />
 
 				<WalletButton />

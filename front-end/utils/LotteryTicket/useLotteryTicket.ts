@@ -22,7 +22,7 @@ const contractUtils = {
     async getContractInstance() {
       const signer = await getSigner();
       if (!signer) throw new Error("Signer not found");
-      return new ethers.Contract(CONTRACT_CONFIG.ADDRESS, CONTRACT_CONFIG.ABI, signer);
+      return new ethers.Contract(this.contractAddress, CONTRACT_CONFIG.ABI, signer);
     },
 
     setContractAddress(newAddress : string) {
@@ -50,7 +50,7 @@ const contractUtils = {
     
       },
 
-      async getListingPrice() : Promise<number> {
+      async getListingPrice() : Promise<bigint> {
         try{
             const contract = await this.getContractInstance();
             const listingPrice = await contract.getListingPrice();

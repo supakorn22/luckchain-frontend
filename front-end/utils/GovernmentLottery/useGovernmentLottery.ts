@@ -22,7 +22,7 @@ const contractUtils = {
     async getContractInstance() {
       const signer = await getSigner();
       if (!signer) throw new Error("Signer not found");
-      return new ethers.Contract(CONTRACT_CONFIG.ADDRESS, CONTRACT_CONFIG.ABI, signer);
+      return new ethers.Contract(this.contractAddress, CONTRACT_CONFIG.ABI, signer);
     },
 
     setContractAddress(newAddress : string) {
@@ -64,10 +64,10 @@ const contractUtils = {
     
     },
 
-    async getTicket(address:string) : Promise< number[]> { 
+    async getTickets(address:string) : Promise< number[]> { 
         try{
             const contract = await this.getContractInstance();
-            const ticket = await contract.getTicket(address);
+            const ticket = await contract.getTickets(address);
             return ticket;
         }
         catch(error){
@@ -80,7 +80,7 @@ const contractUtils = {
     async LotteryTicket () : Promise< string> {
         try{
             const contract = await this.getContractInstance();
-            const address = await contract.LotteryTicket();
+            const address = await contract.lotteryTicket();
             return address;
         }
         catch(error){
@@ -110,8 +110,9 @@ const contractUtils = {
             params: [userAddress, 'latest'],
           });
           
+          const sumPrice = price * BigInt(ticketAmount)
           // Check if user balance is enough
-      if (balance < price* ticketAmount / 10 ** 18) {
+      if (balance < sumPrice / BigInt(10 ** 18)) {
         alert("You do not have enough money to complete this transaction.");
 
         throw new Error('Insufficient balance to buy the lottery ticket.');
@@ -119,7 +120,7 @@ const contractUtils = {
 
       const tx = await contract.buy(ticketNumber,ticketAmount, {
         from: userAddress,
-        value: price,
+        value: sumPrice,
       });
 
       console.log('Lottery ticket purchased successfully:', tx);
@@ -131,6 +132,35 @@ const contractUtils = {
             throw error;
         }
         
+    },
+    async metadata() {
+
+        try{
+            const contract = await this.getContractInstance();
+            const metadata = await contract.metadata();
+            return metadata;
+        }
+        catch(error){
+            console.error("Error getting metadata", error);
+            throw error;
+      
+        }
+
+
+    },
+
+    async getAmount(userAddress : string, ticketNumber : number){
+      try{
+        const contract = await this.getContractInstance();
+            const result = await contract.getAmount(userAddress,ticketNumber)
+            return result;
+          
+      }
+      catch(error){
+
+        console.error("Error getAmount", error);
+            throw error;
+      }
     }
 
 };
