@@ -14,7 +14,7 @@ interface WildCardLotteryListProps {
 const WildCardLotteryList: React.FC<WildCardLotteryListProps> = ({ wildCards }) => {
   return (
     <div className="wildcard-list-container bg-gray-100 p-4 rounded shadow-md mt-10 mx-20">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Wild Card Lotteries</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Last Round Wild Card Lotteries</h2>
       <div className="wildcard-list grid grid-cols-1 md:grid-cols-2 gap-4">
         {wildCards.map((wildCard, index) => (
           <div
