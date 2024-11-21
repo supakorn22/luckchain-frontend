@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import LotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
 import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
-
+import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
 
 
 const BuyLottery: FC = () => {
@@ -25,14 +25,26 @@ const BuyLottery: FC = () => {
         //     throw error;
         // }
 
+        // try{
+        //     const reslt = await LotteryRegistry.getAllGovernmentLottery();
+        //     console.log(reslt);
+        // }
+        // catch(error){
+        //     console.error("Error queryById", error);
+        //     throw error;
+        // }
+
+
+
         try{
-            const reslt = await LotteryRegistry.getAllGovernmentLottery();
-            console.log(reslt);
+            const reslt = await useExactMatchDealerLottery.sell('0x146913E0062143F5d61b82F3c10E1f01dB322164',1000,1000);
+            // console.log(reslt);
         }
         catch(error){
             console.error("Error queryById", error);
             throw error;
         }
+        
     }
 
 

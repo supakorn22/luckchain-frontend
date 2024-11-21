@@ -23,13 +23,19 @@ const Navbar = () => {
             	pageRef={"/mylotterys"}
             />
 			<TopMenuItem
-                title={"Buy lotterys"}
+                title={"Buy"}
             	pageRef={"/buylottopage"}
             />
 			<TopMenuItem
-                title={"sell lotterys"}
+                title={"sell"}
             	pageRef={"/tiedlottopage"}
             />
+			<TopMenuItem
+                title={"admin"}
+            	pageRef={"/admin"}
+            />
+			
+
 
 				<WalletButton />
 			</div>

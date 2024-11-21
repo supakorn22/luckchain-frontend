@@ -6,6 +6,8 @@ import useWeb3 from '@hooks/useWeb3';
 import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
+import LotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
+
 
 
 // Constants and configuration
@@ -23,7 +25,7 @@ const contractUtils = {
     async getContractInstance() {
       const signer = await getSigner();
       if (!signer) throw new Error("Signer not found");
-      return new ethers.Contract(CONTRACT_CONFIG.ADDRESS, CONTRACT_CONFIG.ABI, signer);
+      return new ethers.Contract(this.contractAddress, CONTRACT_CONFIG.ABI, signer);
     },
 
     setContractAddress(newAddress : string) {
@@ -51,7 +53,34 @@ const contractUtils = {
     
       },
 
-      
+    async sell(governmentLotteryAddress : string,winningPrize :number,tickerPrice : number ) {
 
+      try {
+        
+        alert('accept metamask 4 time to finish')
+
+        const ticketAddress = await useLotteryTicket.deploy(999999,tickerPrice,6)
+        const deployAddress = await this.deploy(governmentLotteryAddress,ticketAddress,winningPrize);
+        this.setContractAddress(deployAddress);
+        const contractAddress = deployAddress;
+        useLotteryTicket.setContractAddress(ticketAddress)
+
+        await useLotteryTicket.setMinter(contractAddress)
+
+
+        await LotteryRegistry.add(deployAddress,ticketAddress)
+
+        console.log('done sell exac',contractAddress)
+
+
+      } catch (error) {
+        console.error("Error deploying contract:", error);
+        throw error;
+      }
+
+
+
+    }
 
 };
+export default contractUtils;
