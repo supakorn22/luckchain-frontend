@@ -20,7 +20,7 @@ const UserLotteryList: React.FC<UserLotteryListProps> = ({ tickets }) => {
             {/* Ticket Number */}
             <div className="flex">
               <p className="text-gray-700 font-semibold mr-2">Ticket Number:</p>
-              <p className="text-gray-700">{ticket.ticketNumber}</p>
+              <p className="text-gray-700">{Number(ticket.ticketNumber)}</p>
             </div>
 
             {/* Amount */}

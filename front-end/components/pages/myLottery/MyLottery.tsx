@@ -75,7 +75,7 @@ const MyLottery: FC<{}> = () => {
     useLotteryRegistry.getAllGovernmentLottery()
       .then((result) => {
         setGovernmentLottery(result)
-
+        // console.log(result)
 
       })
      
