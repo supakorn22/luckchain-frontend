@@ -34,11 +34,11 @@ const contractUtils = {
         }
     },
 
-    async deploy(governanceLotteryAddress: string,prizeWildcards: boolean [],tickerPrice :number,prizeAmount :number) : Promise<string> {
+    async deploy(randomContractAddress: string,lotteryTicketAddress: string,winningPrize : number) : Promise<string> {
         try {
           const signer = await getSigner();
           const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
-          const contract = await factory.deploy(governanceLotteryAddress,prizeWildcards,tickerPrice,prizeAmount);
+          const contract = await factory.deploy(randomContractAddress,lotteryTicketAddress,winningPrize);
           await contract.waitForDeployment();
           const deployAddress =  await contract.getAddress();
           this.setContractAddress(deployAddress);
@@ -111,9 +111,9 @@ const contractUtils = {
             params: [userAddress, 'latest'],
           });
           
-          const sumPrice = price * BigInt(ticketAmount)
+          const sumPrice = price * ticketAmount
           // Check if user balance is enough
-      if (balance < sumPrice / BigInt(10 ** 18)) {
+      if (balance < sumPrice / 10 ** 18) {
         alert("You do not have enough money to complete this transaction.");
 
         throw new Error('Insufficient balance to buy the lottery ticket.');
@@ -183,6 +183,30 @@ const contractUtils = {
         console.error("Error getting metadata", error);
         throw error;
       }
+    },
+
+    async fullDeploy(randomContractAddress : string,winningPrize :number,tickerPrice : number,digits:number = 6,maxSet:number = 999999 ) : Promise<[string,string]> {
+
+      try{
+        // deploy ticket
+        const ticketAddress = await useLotteryTicket.deploy(maxSet,tickerPrice,digits)
+        console.log('delpoy ticket:',ticketAddress)
+        // deploy contract
+        const deployAddress = await this.deploy(randomContractAddress,ticketAddress,winningPrize);
+        console.log('deploy contract:',deployAddress)
+        
+        // set ticket minter
+        await useLotteryTicket.setMinter(deployAddress)
+        console.log('set minter')
+
+        return [deployAddress,ticketAddress];
+
+      }
+      catch(error){
+        console.error("Error deploying contract:", error);
+        throw error;
+      }
+
     }
 
 

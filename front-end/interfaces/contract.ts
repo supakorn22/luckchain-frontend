@@ -1,3 +1,11 @@
+interface ContractMetadata {
+  status:number;
+  winningNumber:number;
+  winnigPrize:number;
+  winningNumberValid : boolean;
+}
+
+
 interface LotteriesMetadata {
   tickerPrice: number;
   prizeAmount: number;
@@ -12,22 +20,6 @@ interface WildcardDealerMetadata {
   balance: number;
 }
 
-interface GovernanceLottery {
-  editor: string;
-  owner: string;
-  contractAddress: string;
-  tickerPrice: number;
-  ptizeAmount: number;
-}
-
-interface WildcardDealerLottery {
-  editor: string;
-  owner: string;
-  contractAddress: string;
-  tickerPrice: number;
-  prizeAmount: number;
-  prizeWildcards: boolean[];
-}
 
 interface LotteryTicketFullMetadata {
   digits: number;
@@ -38,6 +30,8 @@ interface LotteryTicketFullMetadata {
   minter: string;
   owner: string;
 }
+
+
 
 interface GovernmentLotteryFullMetadata {
   lottery?: LotteryTicketFullMetadata;
@@ -86,3 +80,39 @@ interface LotteryRegistrySrotage {
 
 
 // export type { LotteriesMetadata,WildcardDealerMetadata,GovernanceLottery,WildcardDealerLottery };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// unuse
+
+
+
+interface GovernanceLottery {
+  editor: string;
+  owner: string;
+  contractAddress: string;
+  tickerPrice: number;
+  ptizeAmount: number;
+}
+
+interface WildcardDealerLottery {
+  editor: string;
+  owner: string;
+  contractAddress: string;
+  tickerPrice: number;
+  prizeAmount: number;
+  prizeWildcards: boolean[];
+}

@@ -6,7 +6,7 @@ import useWeb3 from '@hooks/useWeb3';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 import LotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
-
+import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
 
 
 // Constants and configuration
@@ -52,24 +52,29 @@ const contractUtils = {
     
       },
 
-    async sell(governmentLotteryAddress : string,winningPrize :number,tickerPrice : number ) {
+    async fullDeploy(governmentLotteryAddress : string,winningPrize :number,tickerPrice : number,maxSet:number = 999999 ): Promise<[string,string]> {
 
       try {
         
-        alert('accept metamask 4 time to finish')
+        useGovernmentLottery.setContractAddress(governmentLotteryAddress);
+        const governmentTicketAddress = await useGovernmentLottery.LotteryTicket();
+        useLotteryTicket.setContractAddress(governmentTicketAddress);
+        const digits = await useLotteryTicket.digits();
+        
+        // deploy ticket
+        const ticketAddress = await useLotteryTicket.deploy(maxSet,tickerPrice,digits)
+        console.log('delpoy ticket:',ticketAddress)
 
-        const ticketAddress = await useLotteryTicket.deploy(999999,tickerPrice,6)
+        // deploy contract
         const deployAddress = await this.deploy(governmentLotteryAddress,ticketAddress,winningPrize);
-        this.setContractAddress(deployAddress);
-        const contractAddress = deployAddress;
-        useLotteryTicket.setContractAddress(ticketAddress)
+        console.log('deploy contract:',deployAddress)
+        
+         // set ticket minter
+         await useLotteryTicket.setMinter(deployAddress)
+         console.log('set minter')
 
-        await useLotteryTicket.setMinter(contractAddress)
 
-
-        await LotteryRegistry.add(deployAddress,ticketAddress)
-
-        console.log('done sell exac',contractAddress)
+        return [deployAddress,ticketAddress];
 
 
       } catch (error) {
@@ -101,7 +106,10 @@ const contractUtils = {
         console.error("Error getting metadata", error);
         throw error;
       }
-    }
+    },
+
+
+    
   
 
 

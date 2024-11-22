@@ -33,7 +33,7 @@ const contractUtils = {
         }
     },
 
-    async targetDigits(index : number) : Promise<number> {
+    async targetDigit(index : number) : Promise<number> {
         try{
             const contract = await this.getContractInstance();
             const digits = await contract.targetDigits(index);
@@ -82,7 +82,25 @@ const contractUtils = {
         }
 
       },
+      async targetDigits() : Promise<number[]> {
+        try{
 
+          const contract = await this.getContractInstance();
+          const lotteryTicket = await contract.lotteryTicket();
+          const digits = Number(lotteryTicket.digits);
+          let targetDigits = [];
+
+          for (let i = 0; i < digits; i++) {
+              targetDigits[i] = Number(await contract.targetDigits(i));
+          }
+          return targetDigits;
+        }
+        catch(error){
+            console.error("Error getting target digits:", error);
+            throw error;
+        }
+
+      },
       async getFullMetadata() :Promise<CustomDigitsDealerLotteryFullMetadata> {
         try {
         const contract = await this.getContractInstance();
@@ -109,6 +127,32 @@ const contractUtils = {
         console.error("Error getting metadata", error);
         throw error;
         }
+        },
+
+        async fullDeploy(governmentLotteryAddress : string,winningPrize :number,targetDigits :number [] ,ticketPrice :number,maxSet:number = 999999 ) : Promise<[string,string]> {
+
+          try{
+            const digits = targetDigits.length;
+
+            // deploy ticket
+            const ticketAddress = await useLotteryTicket.deploy(maxSet,ticketPrice,digits)
+            console.log('delpoy ticket:',ticketAddress)
+            // deploy contract
+            const deployAddress = await this.deploy(governmentLotteryAddress,ticketAddress,winningPrize,targetDigits);
+            console.log('deploy contract:',deployAddress)
+            
+            // set ticket minter
+            await useLotteryTicket.setMinter(deployAddress)
+            console.log('set minter')
+    
+            return [deployAddress,ticketAddress];
+    
+          }
+          catch(error){
+            console.error("Error deploying contract:", error);
+            throw error;
+          }
+    
         }
     };
 

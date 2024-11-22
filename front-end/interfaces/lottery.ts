@@ -1,5 +1,18 @@
 
 
+interface BuyedTicket {
+    lotteryType: number;
+    isCustomDigits ?: boolean;
+    digits : number;
+    amount: number;
+    ticketPrices: number;
+    ticketNumber: number;
+    baseLottery: string;
+    targetDigits?: number[];
+    contractMetadata:ContractMetadata;
+}
+
+
 
 interface LotteryGovernmentTicket {
     ticketNumber: number;

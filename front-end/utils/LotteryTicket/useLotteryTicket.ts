@@ -49,11 +49,11 @@ const contractUtils = {
 
   },
 
-  async getListingPrice(): Promise<bigint> {
+  async getListingPrice(): Promise<number> {
     try {
       const contract = await this.getContractInstance();
       const listingPrice = await contract.getListingPrice();
-      return listingPrice;
+      return Number(listingPrice);
     }
     catch (error) {
       console.error("Error getting listing price:", error);
@@ -73,7 +73,18 @@ const contractUtils = {
     }
 
   },
+  async digits(): Promise<number> {
+    try {
+      const contract = await this.getContractInstance();
+      const digits = await contract.digits();
+      return Number(digits);
+    }
+    catch (error) {
+      console.error("Error getting digits:", error);
+      throw error;
+    }
 
+  },
 
 
   async getFullMetadata(): Promise<LotteryTicketFullMetadata> {

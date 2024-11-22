@@ -9,7 +9,7 @@ import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery'
 import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
 import useCustomDigitsDealerLottery from '@utils/CustomDigitsDealerLottery/useCustomDigitsDealerLottery';
 import useLotteryTicket   from '@utils/LotteryTicket/useLotteryTicket';
-
+import useBaseLottery from '@utils/BaseLottery/useBaseLottery';
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -276,18 +276,29 @@ const contractUtils = {
 
             //get wildcardDealerLotterys
             for(let i = 1 ; 1 ; i++){
-                const governmentLottery = await contract.lotteries(1,i);
-                if(governmentLottery[2] == false){
+                const dealerLottery = await contract.lotteries(1,i);
+                if(dealerLottery[2] == false){
                     break;
                 }
-                try{
-                    useCustomDigitsDealerLottery.setContractAddress(governmentLottery[0]);
+               
+                useBaseLottery.setContractAddress(dealerLottery[0]);
+                if(await useBaseLottery.checkDealer())
+                {
+                    useCustomDigitsDealerLottery.setContractAddress(dealerLottery[0]);
                     wildcardDealerLotterys.push(await useCustomDigitsDealerLottery.getFullMetadata());
                 }
-                catch(error){
-                    useExactMatchDealerLottery.setContractAddress(governmentLottery[0]);
+                else{
+                    useExactMatchDealerLottery.setContractAddress(dealerLottery[0]);
                     wildcardDealerLotterys.push(await useExactMatchDealerLottery.getFullMetadata());
                 }
+                // try{
+                //     useCustomDigitsDealerLottery.setContractAddress(governmentLottery[0]);
+                //     wildcardDealerLotterys.push(await useCustomDigitsDealerLottery.getFullMetadata());
+                // }
+                // catch(error){
+                //     useExactMatchDealerLottery.setContractAddress(governmentLottery[0]);
+                //     wildcardDealerLotterys.push(await useExactMatchDealerLottery.getFullMetadata());
+                // }
             }
 
             return {owner,governmentLotterys,wildcardDealerLotterys };
