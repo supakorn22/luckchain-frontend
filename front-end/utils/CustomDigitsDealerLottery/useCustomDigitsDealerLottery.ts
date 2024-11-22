@@ -3,7 +3,6 @@ import getSigner from "../getSigner";
 import json from "./.json";
 import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
-import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 
@@ -23,7 +22,7 @@ const contractUtils = {
     async getContractInstance() {
       const signer = await getSigner();
       if (!signer) throw new Error("Signer not found");
-      return new ethers.Contract(CONTRACT_CONFIG.ADDRESS, CONTRACT_CONFIG.ABI, signer);
+      return new ethers.Contract(this.contractAddress, CONTRACT_CONFIG.ABI, signer);
     },
 
     setContractAddress(newAddress : string) {
@@ -33,6 +32,19 @@ const contractUtils = {
           throw new Error("Invalid address");
         }
     },
+
+    async targetDigits(index : number) : Promise<number> {
+        try{
+            const contract = await this.getContractInstance();
+            const digits = await contract.targetDigits(index);
+            return Number(digits);
+        }
+        catch(error){
+            console.error("Error getting target digits:", error);
+            throw error;
+        }
+    },
+
 
     async deploy(governmentLotteryAddress: string,lotteryTicketAddress: string ,winningPrize :number,targetDigits :number [] ) : Promise<string> {
         try {
@@ -69,8 +81,35 @@ const contractUtils = {
             throw error;
         }
 
-      }
+      },
 
+      async getFullMetadata() :Promise<CustomDigitsDealerLotteryFullMetadata> {
+        try {
+        const contract = await this.getContractInstance();
+        const lotteryTicket = await contract.lotteryTicket();
+        useLotteryTicket.setContractAddress(lotteryTicket);
+        const lottery = await useLotteryTicket.getFullMetadata();
+        const checkFund = Number(await contract.checkFund());
+        const lotteryType = Number(await contract.lotteryType());
+        const metadata = await contract.metadata();
+        const status = Number(metadata[0]);
+        const winingNumber = Number(metadata[1]);
+        const winnigPrize = Number(metadata[2]);
+        const winningNumberValid = metadata[3];
+        const owner = await contract.owner();
+        const digits = Number(lotteryTicket.digits);
+        let targetDigits = [];
 
+        for (let i = 0; i < digits; i++) {
+            targetDigits[i] = Number(await contract.targetDigits(i));
+        }
 
-};
+        return { lottery, checkFund, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner, targetDigits };
+        } catch (error) {
+        console.error("Error getting metadata", error);
+        throw error;
+        }
+        }
+    };
+
+export default contractUtils;

@@ -3,7 +3,6 @@ import getSigner from "../getSigner";
 import json from "./.json";
 import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
-import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 
 

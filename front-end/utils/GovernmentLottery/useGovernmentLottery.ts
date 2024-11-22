@@ -6,6 +6,7 @@ import useWeb3 from '@hooks/useWeb3';
 // import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
+import { promises } from "dns";
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -162,7 +163,29 @@ const contractUtils = {
         console.error("Error getAmount", error);
             throw error;
       }
+    },
+    async getFullMetadata(): Promise<GovernmentLotteryFullMetadata> {
+      try {
+        const contract = await this.getContractInstance();
+        const lotteryTicket = await contract.lotteryTicket();
+        useLotteryTicket.setContractAddress(lotteryTicket);
+        const lottery = await useLotteryTicket.getFullMetadata();
+        const checkFund = Number(await contract.checkFund());
+        const lotteryType = Number(await contract.lotteryType());
+        const metadata = await contract.metadata();
+        const status = Number(metadata[0]);
+        const winingNumber = Number(metadata[1]);
+        const winnigPrize = Number(metadata[2]);
+        const winningNumberValid = metadata[3];
+        const owner = await contract.owner();
+        return { lottery, checkFund, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner };
+      } catch (error) {
+        console.error("Error getting metadata", error);
+        throw error;
+      }
     }
+
+
 
 };
 

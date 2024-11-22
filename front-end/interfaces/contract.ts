@@ -36,14 +36,14 @@ interface LotteryTicketFullMetadata {
   MAX_TICKET_NUMBER: number;
   maxSet: number;
   minter: string;
-  ownner: string;
+  owner: string;
 }
 
 interface GovernmentLotteryFullMetadata {
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
   lotteryTicket: string;
-  lottteryType: number;
+  lotteryType: number;
   status: number;
   winingNumber: number;
   winnigPrize: number;
@@ -55,7 +55,7 @@ interface CustomDigitsDealerLotteryFullMetadata {
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
   lotteryTicket: string;
-  lottteryType: number;
+  lotteryType: number;
   status: number;
   winingNumber: number;
   winnigPrize: number;
@@ -68,7 +68,7 @@ interface ExactMatchDealerLotteryFullMetadata {
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
   lotteryTicket: string;
-  lottteryType: number;
+  lotteryType: number;
   status: number;
   winingNumber: number;
   winnigPrize: number;

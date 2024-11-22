@@ -3,11 +3,12 @@ import getSigner from "../getSigner";
 import json from "./.json";
 import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
-import { WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 import { promises } from "dns";
 import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
-
+import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
+import useCustomDigitsDealerLottery from '@utils/CustomDigitsDealerLottery/useCustomDigitsDealerLottery';
+import useLotteryTicket   from '@utils/LotteryTicket/useLotteryTicket';
 
 
 // Constants and configuration
@@ -95,7 +96,7 @@ const contractUtils = {
         }
     },
 
-    async lotteries(type: number, index: number) {
+    async lotteries(type: number, index: number):Promise<[string,string,boolean]> {
 
         try {
             const contract = await this.getContractInstance();
@@ -252,13 +253,62 @@ const contractUtils = {
         }
 
 
+    },
+
+    async getData():Promise<LotteryRegistrySrotage>{
+        try{
+            const contract = await this.getContractInstance();
+            const owner = await contract.owner();
+
+        
+         let governmentLotterys: GovernmentLotteryFullMetadata[] = []
+         let wildcardDealerLotterys: (CustomDigitsDealerLotteryFullMetadata |  ExactMatchDealerLotteryFullMetadata) [] = [];
+
+          //get governmentLotterys
+            for(let i = 1 ; 1 ; i++){
+                const governmentLottery = await contract.lotteries(0,i);
+                if(governmentLottery[2] == false){
+                    break;
+                }
+                useGovernmentLottery.setContractAddress(governmentLottery[0]);
+                governmentLotterys.push(await useGovernmentLottery.getFullMetadata());
+            }
+
+            //get wildcardDealerLotterys
+            for(let i = 1 ; 1 ; i++){
+                const governmentLottery = await contract.lotteries(1,i);
+                if(governmentLottery[2] == false){
+                    break;
+                }
+                try{
+                    useCustomDigitsDealerLottery.setContractAddress(governmentLottery[0]);
+                    wildcardDealerLotterys.push(await useCustomDigitsDealerLottery.getFullMetadata());
+                }
+                catch(error){
+                    useExactMatchDealerLottery.setContractAddress(governmentLottery[0]);
+                    wildcardDealerLotterys.push(await useExactMatchDealerLottery.getFullMetadata());
+                }
+            }
+
+            return {owner,governmentLotterys,wildcardDealerLotterys };
+        }
+        catch(error){
+            console.error("Error getData", error);
+            throw error;
+        }
+
     }
-
-
 
 
 
 
 };
 
+function isCustomDigitsDealerLottery(
+    lottery: CustomDigitsDealerLotteryFullMetadata | ExactMatchDealerLotteryFullMetadata
+  ): lottery is CustomDigitsDealerLotteryFullMetadata {
+    return 'targetDigits' in lottery;
+  }
+
 export default contractUtils;
+export {isCustomDigitsDealerLottery}
