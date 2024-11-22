@@ -29,15 +29,15 @@ const HomePage: FC<IHomePage> = () => {
 			/>
 			</div>
 
-			<div className='flex flex-col justify-evenly h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
+			<div className='flex flex-col  h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
 				{/* <div className='flex flex-col justify-evenly h-screen pt-24 px-4 md:px-8 md:pt-8 lg:px-16 '>
 					<span className='text-white'>text-whit {address}</span>
 					 </div>*/}
 				
 				<ShowPrevDraw/>	
-				<GovContract/>
+				{/* <GovContract/>
 				<CreateDealerContract/>
-				<DealerContract/>
+				<DealerContract/> */}
 			</div>
 		</div>
 	);

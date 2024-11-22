@@ -1,15 +1,15 @@
 interface LotteriesMetadata {
-    tickerPrice: number;
-    prizeAmount: number;
-    prizeNumber: number;
-    status: number;
-    balance: number;
-  }
+  tickerPrice: number;
+  prizeAmount: number;
+  prizeNumber: number;
+  status: number;
+  balance: number;
+}
 
 interface WildcardDealerMetadata {
-    tickerPrice: number;
-    prizeAmount: number;
-    balance: number;
+  tickerPrice: number;
+  prizeAmount: number;
+  balance: number;
 }
 
 interface GovernanceLottery {
@@ -29,5 +29,60 @@ interface WildcardDealerLottery {
   prizeWildcards: boolean[];
 }
 
+interface LotteryTicketFullMetadata {
+  digits: number;
+  fallbackTicketPrice: number;
+  getListingPrice: number;
+  MAX_TICKET_NUMBER: number;
+  maxSet: number;
+  minter: string;
+  ownner: string;
+}
 
-export type { LotteriesMetadata,WildcardDealerMetadata,GovernanceLottery,WildcardDealerLottery };
+interface GovernmentLotteryFullMetadata {
+  lottery?: LotteryTicketFullMetadata;
+  checkFund: number;
+  lotteryTicket: string;
+  lottteryType: number;
+  status: number;
+  winingNumber: number;
+  winnigPrize: number;
+  winningNumberValid: boolean;
+  owner: string;
+}
+
+interface CustomDigitsDealerLotteryFullMetadata {
+  lottery?: LotteryTicketFullMetadata;
+  checkFund: number;
+  lotteryTicket: string;
+  lottteryType: number;
+  status: number;
+  winingNumber: number;
+  winnigPrize: number;
+  winningNumberValid: boolean;
+  owner: string;
+  targetDigits: number[];
+}
+
+interface ExactMatchDealerLotteryFullMetadata {
+  lottery?: LotteryTicketFullMetadata;
+  checkFund: number;
+  lotteryTicket: string;
+  lottteryType: number;
+  status: number;
+  winingNumber: number;
+  winnigPrize: number;
+  winningNumberValid: boolean;
+  owner: string;
+}
+
+interface LotteryRegistrySrotage {
+    owner: string;
+    governmentLotterys: GovernmentLotteryFullMetadata[];
+    wildcardDealerLotterys: (CustomDigitsDealerLotteryFullMetadata |  ExactMatchDealerLotteryFullMetadata) [];
+}
+
+
+
+
+// export type { LotteriesMetadata,WildcardDealerMetadata,GovernanceLottery,WildcardDealerLottery };

@@ -3,7 +3,7 @@ import getSigner from "../getSigner";
 import json from "./.json";
 import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
-import {WildcardDealerMetadata } from '@interfaces/contract';
+// import {WildcardDealerMetadata } from '@interfaces/contract';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 
@@ -124,6 +124,7 @@ const contractUtils = {
       });
 
       console.log('Lottery ticket purchased successfully:', tx);
+      alert('Lottery ticket purchased successfully:');
 
         }
 
