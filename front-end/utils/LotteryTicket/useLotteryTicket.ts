@@ -90,11 +90,11 @@ const contractUtils = {
   async getFullMetadata(): Promise<LotteryTicketFullMetadata> {
     try {
       const contract = await this.getContractInstance();
-      const digits = await contract.digits();
-      const fallbackTicketPrice = await contract.fallbackTicketPrice();
-      const getListingPrice = await contract.getListingPrice();
-      const MAX_TICKET_NUMBER = await contract.MAX_TICKET_NUMBER();
-      const maxSet = await contract.maxSet();
+      const digits = Number(await contract.digits());
+      const fallbackTicketPrice = Number(await contract.fallbackTicketPrice());
+      const getListingPrice = Number(await contract.getListingPrice());
+      const MAX_TICKET_NUMBER = Number(await contract.MAX_TICKET_NUMBER());
+      const maxSet = await Number(contract.maxSet());
       const minter = await contract.minter();
       const owner = await contract.owner();
       return { digits, fallbackTicketPrice, getListingPrice, MAX_TICKET_NUMBER, maxSet, minter, owner };

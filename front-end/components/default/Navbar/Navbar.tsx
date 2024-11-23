@@ -22,10 +22,10 @@ const Navbar = () => {
                 title={"My lotterys"}
             	pageRef={"/mylotterys"}
             />
-			<TopMenuItem
+			{/* <TopMenuItem
                 title={"Buy"}
             	pageRef={"/buylottopage"}
-            />
+            /> */}
 			<TopMenuItem
                 title={"sell"}
             	pageRef={"/tiedlottopage"}

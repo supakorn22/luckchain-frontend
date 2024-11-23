@@ -91,6 +91,13 @@ interface LotteryRegistrySrotage {
 
 
 
+enum LotteryStatus {
+  NOT_STARTED = 0,
+  ACTIVE = 1,
+  ENDED = 2,
+  PRIZE_PAID = 3,
+  ARCHIVED = 4
+}
 
 
 
