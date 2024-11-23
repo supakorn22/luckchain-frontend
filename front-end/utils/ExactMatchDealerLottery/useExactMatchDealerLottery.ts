@@ -88,11 +88,13 @@ const contractUtils = {
 
     async getFullMetadata(): Promise<ExactMatchDealerLotteryFullMetadata>  {
       try{
+        const contractAddress = this.contractAddress;
         const contract = await this.getContractInstance();
         const lotteryTicket = await contract.lotteryTicket();
         useLotteryTicket.setContractAddress(lotteryTicket);
         const lottery = await useLotteryTicket.getFullMetadata();
         const checkFund = Number(await contract.checkFund());
+        const governmentLottery = await contract.governmentLottery();
         const lotteryType = Number(await contract.lotteryType());
         const metadata = await contract.metadata();
         const status = metadata[0];
@@ -100,7 +102,7 @@ const contractUtils = {
         const winnigPrize = Number(metadata[2]);
         const winningNumberValid = metadata[3];
         const owner = await contract.owner();
-        return {lottery,checkFund,lotteryTicket,lotteryType,status,winingNumber,winnigPrize,winningNumberValid,owner};
+        return {contractAddress,lottery,checkFund,governmentLottery,lotteryTicket,lotteryType,status,winingNumber,winnigPrize,winningNumberValid,owner};
       }
       catch(error){
         console.error("Error getting metadata", error);

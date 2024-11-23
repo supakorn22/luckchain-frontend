@@ -103,11 +103,13 @@ const contractUtils = {
       },
       async getFullMetadata() :Promise<CustomDigitsDealerLotteryFullMetadata> {
         try {
+        const contractAddress = this.contractAddress;
         const contract = await this.getContractInstance();
         const lotteryTicket = await contract.lotteryTicket();
         useLotteryTicket.setContractAddress(lotteryTicket);
         const lottery = await useLotteryTicket.getFullMetadata();
         const checkFund = Number(await contract.checkFund());
+        const governmentLottery = await contract.governmentLottery();
         const lotteryType = Number(await contract.lotteryType());
         const metadata = await contract.metadata();
         const status = Number(metadata[0]);
@@ -122,7 +124,7 @@ const contractUtils = {
             targetDigits[i] = Number(await contract.targetDigits(i));
         }
 
-        return { lottery, checkFund, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner, targetDigits };
+        return { contractAddress,lottery, checkFund,governmentLottery, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner, targetDigits };
         } catch (error) {
         console.error("Error getting metadata", error);
         throw error;

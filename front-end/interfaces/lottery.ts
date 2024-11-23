@@ -1,6 +1,7 @@
 
 
 interface BuyedTicket {
+    contractAddress: string;
     lotteryType: number;
     isCustomDigits ?: boolean;
     digits : number;

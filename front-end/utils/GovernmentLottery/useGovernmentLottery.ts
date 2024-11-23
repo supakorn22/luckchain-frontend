@@ -166,6 +166,7 @@ const contractUtils = {
     },
     async getFullMetadata(): Promise<GovernmentLotteryFullMetadata> {
       try {
+        const contractAddress = this.contractAddress; 
         const contract = await this.getContractInstance();
         const lotteryTicket = await contract.lotteryTicket();
         useLotteryTicket.setContractAddress(lotteryTicket);
@@ -178,7 +179,7 @@ const contractUtils = {
         const winnigPrize = Number(metadata[2]);
         const winningNumberValid = metadata[3];
         const owner = await contract.owner();
-        return { lottery, checkFund, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner };
+        return { contractAddress,lottery, checkFund, lotteryTicket, lotteryType, status, winingNumber, winnigPrize, winningNumberValid, owner };
       } catch (error) {
         console.error("Error getting metadata", error);
         throw error;

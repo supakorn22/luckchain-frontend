@@ -1,10 +1,13 @@
 import Meta from '@components/common/Meta';
-import { FC } from 'react';
+import { FC,useEffect,useState } from 'react';
 import { IHomePage } from './HomePage.type';
 import useWeb3 from '@hooks/useWeb3';
 import { ethers } from "ethers";
 import LotteryLastRound from './components/LotteryLastRound';
 import WildCardLotteryList from './components/WildCardLotteryList';
+
+import useLotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
+
 
 
 import GovContract from '@components/pages/_component/GovContract';
@@ -14,6 +17,18 @@ import CreateDealerContract from '@components/pages/_component/CreateDealerContr
 
 const HomePage: FC<IHomePage> = () => {
 
+  const [currentGovAddress, setCurrentGovAddress] = useState<string>('');
+
+
+  useEffect(() => {
+    useLotteryRegistry.getData()
+      .then((result) => {
+     
+
+
+      })
+
+  }, []);
 
 
 	// const topWildCards = [...wildCards]
@@ -34,7 +49,7 @@ const HomePage: FC<IHomePage> = () => {
 					<span className='text-white'>text-whit {address}</span>
 					 </div>*/}
 				
-				<ShowPrevDraw/>	
+				{/* <ShowPrevDraw/>	 */}
 				{/* <GovContract/>
 				<CreateDealerContract/>
 				<DealerContract/> */}

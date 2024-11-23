@@ -82,14 +82,14 @@ const BuyLottery: FC = () => {
         //     throw error;
         // }
         
-        try{
-            const reslt = await useGovernmentLottery.fullDeploy('0x722d2B77039052d3f314AcF01C144B3078135A83',1000,1000);
-            console.log(reslt);
-        }
-        catch(error){
-            console.error("Error queryById", error);
-            throw error;
-        }
+        // try{
+        //     const reslt = await useGovernmentLottery.fullDeploy('0x722d2B77039052d3f314AcF01C144B3078135A83',1000,1000);
+        //     console.log(reslt);
+        // }
+        // catch(error){
+        //     console.error("Error queryById", error);
+        //     throw error;
+        // }
 
 
         // try{
@@ -113,14 +113,14 @@ const BuyLottery: FC = () => {
         // }
 
         
-        // try{
-        //     const reslt = await useExactMatchDealerLottery.fullDeploy('0x5716282c4f1DCbd1F75C89a6d6e8703e9148d658',1000,1000);
-        //     console.log(reslt);
-        // }
-        // catch(error){
-        //     console.error("Error queryById", error);
-        //     throw error;
-        // }
+        try{
+            const reslt = await useExactMatchDealerLottery.fullDeploy('0x75a357407d37e2E5c5efdF695E8806CA592fFe1D',1000,1000);
+            console.log(reslt);
+        }
+        catch(error){
+            console.error("Error queryById", error);
+            throw error;
+        }
 
 
 

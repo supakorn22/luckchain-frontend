@@ -34,6 +34,7 @@ interface LotteryTicketFullMetadata {
 
 
 interface GovernmentLotteryFullMetadata {
+  contractAddress: string;
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
   lotteryTicket: string;
@@ -46,8 +47,10 @@ interface GovernmentLotteryFullMetadata {
 }
 
 interface CustomDigitsDealerLotteryFullMetadata {
+  contractAddress: string;
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
+  governmentLottery: string;
   lotteryTicket: string;
   lotteryType: number;
   status: number;
@@ -59,8 +62,10 @@ interface CustomDigitsDealerLotteryFullMetadata {
 }
 
 interface ExactMatchDealerLotteryFullMetadata {
+  contractAddress: string;
   lottery?: LotteryTicketFullMetadata;
   checkFund: number;
+  governmentLottery: string;
   lotteryTicket: string;
   lotteryType: number;
   status: number;

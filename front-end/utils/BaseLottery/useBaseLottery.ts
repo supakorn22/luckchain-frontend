@@ -131,6 +131,8 @@ const contractUtils = {
       let buyedTickets: BuyedTicket[] = [];
 
       const contract = await this.getContractInstance();
+
+
       const ticketNumbers = await contract.getTickets();
 
       const lotteryTicketAddress = await contract.lotteryTicket();
@@ -138,6 +140,7 @@ const contractUtils = {
 
       let amouns: number[] = [];
 
+      const contractAddress = this.contractAddress;
       const lotteryType = await contract.lotteryType();
       const isCustomDigits = await this.checkDealer();
       const digits = await useLotteryTicket.digits();
@@ -151,7 +154,7 @@ const contractUtils = {
 
       for (const ticketNumber of ticketNumbers) {
         const amount = await contract.getAmount(ticketNumber);
-        buyedTickets.push({ lotteryType, isCustomDigits, digits, amount, ticketPrices, ticketNumber, baseLottery, targetDigits, contractMetadata });
+        buyedTickets.push({ contractAddress,lotteryType, isCustomDigits, digits, amount, ticketPrices, ticketNumber, baseLottery, targetDigits, contractMetadata });
       }
 
       return buyedTickets;
