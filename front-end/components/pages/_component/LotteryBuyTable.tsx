@@ -40,6 +40,19 @@ const mapStatusToEnum = (status: number): string => {
       return "Unknown";
   }
 };
+const CustomDigitsWinningNumber = (winningNumber: number,targetDigits : number[]): number => {
+  const winningNumberList = winningNumber.toString().split('').map(Number);
+  let customWinningNumber :number = 0;
+  
+  for (let i=0;i<targetDigits.length;i++){
+    customWinningNumber += winningNumberList[targetDigits[i]] * Math.pow(10,i);
+  
+  }
+
+  
+  return customWinningNumber;
+}
+
 
 const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
   // Map to store rounds for government lotteries
@@ -47,10 +60,10 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
   
   const governmentLotterysAddressToRound = data.governmentLotterys.reduce(
     (acc, lottery, index) => {
-      acc[lottery.contractAddress] = [index + 1, lottery.status];
+      acc[lottery.contractAddress] = [index + 1, lottery.status, lottery.winingNumber];
       return acc;
     },
-    {} as { [key: string]: [number,number] }
+    {} as { [key: string]: [number,number,number] }
   );
 
   return (
@@ -84,7 +97,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
                 <TableCell>{lottery.winnigPrize.toString()}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
-                  { index + 1 === GovernmentLotterysLength && lottery.status<2  &&
+                  { index + 1 === GovernmentLotterysLength && lottery.status==2  &&
                   <Button
                     variant="contained"
                     color="primary"
@@ -129,15 +142,27 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
                     ? "Custom Digits Dealer"
                     : "Exact Match Dealer"}
                 </TableCell>
-                <TableCell>{lottery.status}</TableCell>
-                <TableCell>{lottery.winingNumber.toString()}</TableCell>
+                <TableCell>{governmentLotterysAddressToRound[lottery.governmentLottery][1]}</TableCell>
+                <TableCell>{
+                
+                Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                    ? CustomDigitsWinningNumber(governmentLotterysAddressToRound[lottery.governmentLottery][2],(lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                    : governmentLotterysAddressToRound[lottery.governmentLottery][2]
+                
+                  
+                  
+                  
+                  }
+
+
+                </TableCell>
                 <TableCell>{lottery.winnigPrize.toString()}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
 
                 { index + 1 === GovernmentLotterysLength 
                 && lottery.status<2 
-                &&   governmentLotterysAddressToRound[lottery.governmentLottery][1] <2
+                &&   governmentLotterysAddressToRound[lottery.governmentLottery][1] ==2 
                 &&
                   <Button
                     variant="contained"

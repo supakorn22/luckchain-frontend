@@ -7,7 +7,7 @@ import LotteryLastRound from './components/LotteryLastRound';
 import WildCardLotteryList from './components/WildCardLotteryList';
 
 import useLotteryRegistry from '@utils/LotteryRegistry/useLotteryRegistry';
-import { CircularProgress, Box } from "@mui/material";
+import { CircularProgress, Box, Typography } from "@mui/material";
 
 import GovContract from '@components/pages/_component/GovContract';
 import DealerContract from '@components/pages/_component/DealerContract';
@@ -34,7 +34,6 @@ const HomePage: FC<IHomePage> = () => {
 	useEffect(() => {
 		useLotteryRegistry.getData()
 			.then((result) => {
-				console.log(result);
 				setRegisterData(result);
 
 			})
@@ -56,14 +55,18 @@ const HomePage: FC<IHomePage> = () => {
 			</div>
 
 			<div className='flex flex-col  h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
-
+				<Typography className="text-black" >
+					In this home page you can buy lottery by click on buy button. You can see the list of lottery below.
+					<br /> If the buy button is not show that means the lottery cant buy cause the status is not active.
+					<br /> The buy button will show if the status is ACTIVE.
+				</Typography>
 
 				<BuyLottery contractData={selectedContractData} onPurchase={() => console.log("Purchased!")} />
 				<br />
 
 				{registerData && (
 					<Suspense fallback={<div>Loading...</div>}>
-						<LotteryTable data={registerData} onBuyClick={handleBuyClick}  />
+						<LotteryTable data={registerData} onBuyClick={handleBuyClick} />
 					</Suspense>
 				)}
 

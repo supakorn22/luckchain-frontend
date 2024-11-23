@@ -15,7 +15,8 @@ import useBaseLottery from '@utils/BaseLottery/useBaseLottery';
 export const CONTRACT_CONFIG = {
     ADDRESS: process.env.NEXT_PUBLIC_LotteryRegistry_ADDRESS || "0x471b9e9f7779D86e7367b936F7E0A2Dc7BAfD2e3",
     ABI: json.abi,
-    BYTECODE: json.bytecode
+    BYTECODE: json.bytecode,
+    RandomSubscriberAddress: process.env.NEXT_PUBLIC_RandomSubscriber_ADDRESS || "0x722d2B77039052d3f314AcF01C144B3078135A83"
 };
 
 const contractUtils = {
@@ -37,11 +38,11 @@ const contractUtils = {
         }
     },
 
-    async deploy(governanceLotteryAddress: string, prizeWildcards: boolean[], tickerPrice: number, prizeAmount: number): Promise<string> {
+    async deploy(): Promise<string> {
         try {
             const signer = await getSigner();
             const factory = new ethers.ContractFactory(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.BYTECODE, signer);
-            const contract = await factory.deploy(governanceLotteryAddress, prizeWildcards, tickerPrice, prizeAmount);
+            const contract = await factory.deploy();
             await contract.waitForDeployment();
             const deployAddress = await contract.getAddress();
             this.setContractAddress(deployAddress);
@@ -51,7 +52,6 @@ const contractUtils = {
             console.error("Error deploying contract:", error);
             throw error;
         }
-
     },
 
     async add(lotteryBase: string, lotteryTicket: string) {
@@ -308,9 +308,51 @@ const contractUtils = {
             throw error;
         }
 
-    }
+    },
 
+    async getGovernmentData():Promise<GovernmentLotteryFullMetadata[]>{
+        try{
+            const contract = await this.getContractInstance();
+            let governmentLotterys: GovernmentLotteryFullMetadata[] = []
+            for(let i = 1 ; 1 ; i++){
+                const governmentLottery = await contract.lotteries(0,i);
+                if(governmentLottery[2] == false){
+                    break;
+                }
+                useGovernmentLottery.setContractAddress(governmentLottery[0]);
+                governmentLotterys.push(await useGovernmentLottery.getFullMetadata());
+            }
+            return governmentLotterys;
+        }
+        catch(error){
+            console.error("Error getGovernmentData", error);
+            throw error;
+        }
+    },
+// (randomContractAddress : string,winningPrize :number,tickerPrice : number,digits:number = 6,maxSet:number = 999999 )
+    async addGovernmentLottery(winningPrize: number, tickerPrice: number, digits: number = 6, maxSet: number = 999999, randomContractAddress?: string) {
+        if(!randomContractAddress){
+            randomContractAddress = CONTRACT_CONFIG.RandomSubscriberAddress;
+        }
+    
+        alert('You need to confirm the transaction in your wallet 4 times.');
+      const [contractAddress,ticketAddress] = await useGovernmentLottery.fullDeploy(randomContractAddress,winningPrize,tickerPrice,digits,maxSet)
 
+        await this.add(contractAddress,ticketAddress);
+
+    },
+
+    async addWildcardDealerLottery(governmentLotteryAddress: string,winningPrize :number,targetDigits :number [] ,ticketPrice :number,maxSet:number = 999999){
+        alert('You need to confirm the transaction in your wallet 4 times.');
+        const [contractAddress,ticketAddress] = await useCustomDigitsDealerLottery.fullDeploy(governmentLotteryAddress,winningPrize,targetDigits,ticketPrice,maxSet)
+        await this.add(contractAddress,ticketAddress);
+    },
+
+    async addExactMatchDealerLottery(governmentLotteryAddress: string,winningPrize :number,ticketPrice : number,maxSet:number = 999999){
+        alert('You need to confirm the transaction in your wallet 4 times.');
+        const [contractAddress,ticketAddress] = await useExactMatchDealerLottery.fullDeploy(governmentLotteryAddress,winningPrize,ticketPrice,maxSet)
+        await this.add(contractAddress,ticketAddress);
+    },
 
 
 };

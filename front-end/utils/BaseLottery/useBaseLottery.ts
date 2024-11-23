@@ -7,6 +7,7 @@ import getBalance from '../getBalance';
 import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
 import useCustomDigitsDealerLottery from '@utils/CustomDigitsDealerLottery/useCustomDigitsDealerLottery';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
+import { start } from "repl";
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -221,7 +222,46 @@ const contractUtils = {
     }
 
   },
-
+  async start(): Promise<void> {
+    try {
+      const contract = await this.getContractInstance();
+      await contract.start();
+    }
+    catch (error) {
+      console.error("Error start", error);
+      throw error;
+    }
+  },
+  async end(): Promise<void> {
+    try {
+      const contract = await this.getContractInstance();
+      await contract.end();
+    }
+    catch (error) {
+      console.error("Error end", error);
+      throw error;
+    }
+  },
+  async payPrize(): Promise<void> {
+    try {
+      const contract = await this.getContractInstance();
+      await contract.payPrize();
+    }
+    catch (error) {
+      console.error("Error payPrize", error);
+      throw error;
+    }
+  },
+  async archive(): Promise<void> {
+    try {
+      const contract = await this.getContractInstance();
+      await contract.archive();
+    }
+    catch (error) {
+      console.error("Error archive", error);
+      throw error;
+    }
+  }
 
 };
 
