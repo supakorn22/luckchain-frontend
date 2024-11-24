@@ -401,7 +401,48 @@ const contractUtils = {
             console.error("Error getAllUserLottery", error);
             throw error;
         }
-    }
+    },
+
+    async getLastGovernmentLottery(): Promise<GovernmentLotteryFullMetadata> {
+        try {
+
+            const contract = await this.getContractInstance();
+            let letGovernmentLotterysAddress: string = "";
+            for (let i = 1; 1; i++) {
+                const governmentLottery = await contract.lotteries(0, i);
+                if (governmentLottery[2] == false) {
+                    break;
+                }
+                letGovernmentLotterysAddress = governmentLottery[0];
+            }
+
+            const governmentLotterysAddress = letGovernmentLotterysAddress;
+            useGovernmentLottery.setContractAddress(governmentLotterysAddress);
+            return await useGovernmentLottery.getFullMetadata();
+            // const lastAddress = await this.getLastGovernmentAddress();
+            // useGovernmentLottery.setContractAddress(lastAddress);
+            // const metadata = await useGovernmentLottery.getFullMetadata();
+            // return metadata;
+        } catch (error) {
+            console.error("Error getLastGovernmentLottery", error);
+            throw error;
+        }
+    },
+
+    async addExactMatchLottery(  governmentLotteryAddress: string, winningPrize: number, ticketPrice: number, maxSet: number = 999999) {
+        alert('You need to confirm the transaction in your wallet 4 times.');
+        const [contractAddress, ticketAddress] = await useExactMatchDealerLottery.fullDeploy(governmentLotteryAddress, winningPrize, ticketPrice, maxSet)
+        await this.add(contractAddress, ticketAddress);
+    },
+
+    async addCustomDigitsLottery(governmentLotteryAddress: string, winningPrize: number, targetDigits: number[], ticketPrice: number, maxSet: number = 999999) {
+        alert('You need to confirm the transaction in your wallet 4 times.');
+        const [contractAddress, ticketAddress] = await useCustomDigitsDealerLottery.fullDeploy(governmentLotteryAddress, winningPrize, targetDigits, ticketPrice, maxSet)
+        await this.add(contractAddress, ticketAddress);
+    },
+
+
+
 
 
 };

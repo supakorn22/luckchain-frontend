@@ -225,7 +225,9 @@ const contractUtils = {
       throw error;
     }
 
-  }
+  },
+
+  
 
 
 

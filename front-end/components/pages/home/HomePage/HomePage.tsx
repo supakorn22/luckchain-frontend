@@ -64,7 +64,9 @@ const HomePage: FC<IHomePage> = () => {
 				<BuyLottery contractData={selectedContractData} onPurchase={() => console.log("Purchased!")} />
 				<br />
 				<Typography className="text-black" >
-					Selled lottery wwill show here. Maybe it slow to load.
+					Selled lottery will show here. Maybe it slow to load.
+					<br/> You cant buy dealer lottery if last government lottery status is End , Pay Prize Paid or Archived.
+					<br/> You can match government lottery and dealer lottery by first column of the table.
 				</Typography>
 
 				{registerData && (

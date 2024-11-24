@@ -114,7 +114,6 @@ const contractUtils = {
         const metadata = await contract.metadata();
         const status = Number(metadata[0]);
         
-        const winningNumberValid = metadata[3];
         const owner = await contract.owner();
         const digits = Number(lotteryTicket.digits);
 
@@ -125,7 +124,8 @@ const contractUtils = {
        
 
         const winingNumber = Number(governmentMetadata.winningNumber);
-        const winnigPrize = Number(governmentMetadata.winningNumberValid);
+        const winnigPrize = Number(metadata[2])
+        const winningNumberValid = governmentMetadata.winningNumberValid;
 
         let targetDigits = [];
 

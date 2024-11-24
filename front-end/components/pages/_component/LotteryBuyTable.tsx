@@ -40,30 +40,30 @@ const mapStatusToEnum = (status: number): string => {
       return "Unknown";
   }
 };
-const CustomDigitsWinningNumber = (winningNumber: number,targetDigits : number[]): number => {
+const CustomDigitsWinningNumber = (winningNumber: number, targetDigits: number[]): number => {
   const winningNumberList = winningNumber.toString().split('').map(Number);
-  let customWinningNumber :number = 0;
-  
-  for (let i=0;i<targetDigits.length;i++){
-    customWinningNumber += winningNumberList[targetDigits[i]] * Math.pow(10,i);
-  
+  let customWinningNumber: number = 0;
+
+  for (let i = 0; i < targetDigits.length; i++) {
+    customWinningNumber += winningNumberList[targetDigits[i]] * Math.pow(10, i);
+
   }
 
-  
+
   return customWinningNumber;
 }
 
 
-const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
+const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick }) => {
   // Map to store rounds for government lotteries
   const GovernmentLotterysLength = data.governmentLotterys.length;
-  
+
   const governmentLotterysAddressToRound = data.governmentLotterys.reduce(
     (acc, lottery, index) => {
       acc[lottery.contractAddress] = [index + 1, lottery.status, lottery.winingNumber];
       return acc;
     },
-    {} as { [key: string]: [number,number,number] }
+    {} as { [key: string]: [number, number, number] }
   );
 
   return (
@@ -82,6 +82,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
               <TableCell>Status</TableCell>
               <TableCell>Winning Number</TableCell>
               <TableCell>Winning Prize</TableCell>
+              <TableCell>Ticket price</TableCell>
               <TableCell>Owner</TableCell>
               <TableCell>Buy</TableCell>
             </TableRow>
@@ -89,27 +90,28 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
           <TableBody>
             {data.governmentLotterys.map((lottery, index) => (
               <TableRow key={`gov-${index}`}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>{data.governmentLotterys.length - index}</TableCell>
                 <TableCell><TruncateText text={lottery.contractAddress} /></TableCell>
                 <TableCell>Government Lottery</TableCell>
                 <TableCell>{mapStatusToEnum(lottery.status)}</TableCell>
                 <TableCell>{
-               lottery.winningNumberValid ?
-                lottery.winingNumber.toString() :
-                'not out'
-                
+                  lottery.winningNumberValid ?
+                    lottery.winingNumber.toString() :
+                    'not out'
+
                 }</TableCell>
                 <TableCell>{lottery.winnigPrize.toString()}</TableCell>
+                <TableCell>{lottery.lottery?.getListingPrice}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
-                  { index + 1 === GovernmentLotterysLength && lottery.status==2  &&
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => onBuyClick(lottery)} // Trigger the callback
-                  >
-                    Buy
-                  </Button>}
+                  {index + 1 === GovernmentLotterysLength && lottery.status == 2 &&
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => onBuyClick(lottery)} // Trigger the callback
+                    >
+                      Buy
+                    </Button>}
                 </TableCell>
               </TableRow>
             ))}
@@ -132,6 +134,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
               <TableCell>Status</TableCell>
               <TableCell>Winning Number</TableCell>
               <TableCell>Winning Prize</TableCell>
+              <TableCell>Ticket price</TableCell>
               <TableCell>Owner</TableCell>
               <TableCell>Buy</TableCell>
 
@@ -147,38 +150,42 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
                     ? "Custom Digits Dealer"
                     : "Exact Match Dealer"}
                 </TableCell>
-                <TableCell>{governmentLotterysAddressToRound[lottery.governmentLottery][1]}</TableCell>
+                <TableCell>{mapStatusToEnum(lottery.status)}</TableCell>
                 <TableCell>{
-                
-                // Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
-                //     ? CustomDigitsWinningNumber(governmentLotterysAddressToRound[lottery.governmentLottery][2],(lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
-                //     : governmentLotterysAddressToRound[lottery.governmentLottery][2]
-                
-                Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits) ? 
-                CustomDigitsWinningNumber(lottery.winingNumber, (lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
-                : lottery.winingNumber
-                  
-                  
-                  
-                  }
+
+                  // Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                  //     ? CustomDigitsWinningNumber(governmentLotterysAddressToRound[lottery.governmentLottery][2],(lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                  //     : governmentLotterysAddressToRound[lottery.governmentLottery][2]
+
+
+                  lottery.winningNumberValid ?
+
+                    (Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits) ?
+                      CustomDigitsWinningNumber(lottery.winingNumber, (lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                      : lottery.winingNumber) : 'not out'
+
+
+
+                }
 
 
                 </TableCell>
                 <TableCell>{lottery.winnigPrize.toString()}</TableCell>
+                <TableCell>{lottery.lottery?.getListingPrice}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
 
-                { index + 1 === GovernmentLotterysLength 
-                && lottery.status<2 
-                &&   governmentLotterysAddressToRound[lottery.governmentLottery][1] ==2 
-                &&
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => onBuyClick(lottery)} // Trigger the callback
-                  >
-                    Buy
-                  </Button>}
+                  {index + 1 === GovernmentLotterysLength
+                    && lottery.status < 2
+                    && governmentLotterysAddressToRound[lottery.governmentLottery][1] == 2
+                    &&
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => onBuyClick(lottery)} // Trigger the callback
+                    >
+                      Buy
+                    </Button>}
                 </TableCell>
               </TableRow>
             ))}

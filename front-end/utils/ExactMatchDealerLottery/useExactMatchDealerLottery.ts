@@ -98,9 +98,15 @@ const contractUtils = {
         const lotteryType = Number(await contract.lotteryType());
         const metadata = await contract.metadata();
         const status = Number(metadata[0]);
-        const winingNumber = Number(metadata[1]);
-        const winnigPrize = Number(metadata[2]);
-        const winningNumberValid = metadata[3];
+
+        useGovernmentLottery.setContractAddress(governmentLottery);
+        const governmentMetadata = await useGovernmentLottery.metadata();
+       
+
+        const winingNumber = Number(governmentMetadata.winningNumber);
+        const winnigPrize = Number(metadata[2])
+        const winningNumberValid = governmentMetadata.winningNumberValid;
+        
         const owner = await contract.owner();
         return {contractAddress,lottery,checkFund,governmentLottery,lotteryTicket,lotteryType,status,winingNumber,winnigPrize,winningNumberValid,owner};
       }

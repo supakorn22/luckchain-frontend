@@ -57,6 +57,9 @@ const BuyLottery: React.FC<BuyLotteryProps> = ({ contractData, onPurchase }) => 
       <Typography className="text-black">
        Limit digits: {contractData?.lottery?.digits}
       </Typography>
+      <Typography className="text-black">
+      Ticket price: {contractData?.lottery?.getListingPrice} wei
+      </Typography>
 
       <Typography className="text-black">Contract Address: {contractData?.contractAddress}</Typography>
         <br/>

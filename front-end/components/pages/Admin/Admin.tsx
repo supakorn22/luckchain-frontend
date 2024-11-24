@@ -156,7 +156,7 @@ const AdminPage: React.FC = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            label="Ticker Price"
+                            label="Ticket Price"
                             variant="outlined"
                             fullWidth
                             type="number"

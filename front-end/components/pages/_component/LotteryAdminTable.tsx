@@ -42,8 +42,6 @@ const mapStatusToEnum = (status: number): string => {
 };
 
 const LotteryTable: React.FC<LotteryTableProps> = ({ data }) => {
-  // Reverse the data to map from last to first
-  const reversedData = [...data].reverse();
 
   return (
     <div>
