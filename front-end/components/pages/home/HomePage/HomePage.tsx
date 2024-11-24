@@ -73,6 +73,7 @@ const HomePage: FC<IHomePage> = () => {
 					<Suspense fallback={<div className='text-black'>Loading...</div>}>
 						<LotteryTable data={registerData} onBuyClick={handleBuyClick} />
 					</Suspense>
+					
 				)}
 
 

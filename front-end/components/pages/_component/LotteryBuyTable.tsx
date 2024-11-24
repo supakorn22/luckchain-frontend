@@ -177,7 +177,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick }) => {
 
                   {index + 1 === GovernmentLotterysLength
                     && lottery.status == 1 
-                    && governmentLotterysAddressToRound[lottery.governmentLottery][1] == 1
+                    && governmentLotterysAddressToRound[lottery.governmentLottery][1] <=1
                     &&
                     <Button
                       variant="contained"
