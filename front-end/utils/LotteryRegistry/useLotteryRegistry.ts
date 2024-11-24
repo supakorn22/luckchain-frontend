@@ -441,6 +441,41 @@ const contractUtils = {
         await this.add(contractAddress, ticketAddress);
     },
 
+    async getAllUserDealerLottery(): Promise< (CustomDigitsDealerLotteryFullMetadata |  ExactMatchDealerLotteryFullMetadata) []> {
+        try {
+            const contract = await this.getContractInstance();
+            const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+            const userAddress = accounts[0];
+
+            let dealerLotterys = [];
+            for (let i = 1; 1; i++) {
+                const dealerLottery = await contract.lotteries(1, i);
+                if (dealerLottery[2] == false) {
+                    break;
+                }
+                useBaseLottery.setContractAddress(dealerLottery[0]);
+                const owner = await useBaseLottery.owner();
+                
+                if(owner.toLowerCase() === userAddress.toLowerCase()){
+                    
+                    if (await useBaseLottery.checkDealer()) {
+                        useCustomDigitsDealerLottery.setContractAddress(dealerLottery[0]);
+                        dealerLotterys.push(await useCustomDigitsDealerLottery.getFullMetadata());
+                    }
+                    else {
+                        useExactMatchDealerLottery.setContractAddress(dealerLottery[0]);
+                        dealerLotterys.push(await useExactMatchDealerLottery.getFullMetadata());
+                    }
+                }
+            }
+            return dealerLotterys;
+        }
+        catch (error) {
+            console.error("Error getAllUserDealerLottery", error);
+            throw error;
+        }
+
+    }
 
 
 

@@ -57,8 +57,8 @@ const HomePage: FC<IHomePage> = () => {
 			<div className='flex flex-col  h-screen px-4 md:px-8 md:pt-4 lg:px-16 mb-20 '>
 				<Typography className="text-black" >
 					In this home page you can buy lottery by click on buy button. You can see the list of lottery below.
+					<br /> To buy lottery you need to click buy on table below.
 					<br /> If the buy button is not show that means the lottery cant buy cause the status is not active.
-					<br /> The buy button will show if the lottery status is ACTIVE.
 				</Typography>
 
 				<BuyLottery contractData={selectedContractData} onPurchase={() => console.log("Purchased!")} />

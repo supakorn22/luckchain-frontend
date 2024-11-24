@@ -104,7 +104,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick }) => {
                 <TableCell>{lottery.lottery?.getListingPrice}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
-                  {index + 1 === GovernmentLotterysLength && lottery.status == 2 &&
+                  { (data.governmentLotterys.length - index)  === GovernmentLotterysLength && lottery.status == 1 &&
                     <Button
                       variant="contained"
                       color="primary"
@@ -176,8 +176,8 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick }) => {
                 <TableCell>
 
                   {index + 1 === GovernmentLotterysLength
-                    && lottery.status < 2
-                    && governmentLotterysAddressToRound[lottery.governmentLottery][1] == 2
+                    && lottery.status == 1 
+                    && governmentLotterysAddressToRound[lottery.governmentLottery][1] == 1
                     &&
                     <Button
                       variant="contained"

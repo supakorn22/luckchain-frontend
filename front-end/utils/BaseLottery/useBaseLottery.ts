@@ -283,6 +283,17 @@ const contractUtils = {
       console.error("Error archive", error);
       throw error;
     }
+  },
+  async owner(): Promise<string> {
+    try {
+      const contract = await this.getContractInstance();
+      const owner = await contract.owner();
+      return owner;
+    }
+    catch (error) {
+      console.error("Error owner", error);
+      throw error;
+    }
   }
 
 };

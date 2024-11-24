@@ -125,7 +125,7 @@ const AdminPage: React.FC = () => {
             <Typography className="text-black" >
                 <br />To sell lottery you need to ARCHIVED last lottery first(the top lottery of table). This is not contract requirement but it is a good practice for my frontend setup.
                 <br /> The status of lottery can be NOT_STARTED -{">"} ACTIVE -{">"} ENDED -{">"} PRIZE_PAID -{">"} ARCHIVED
-                <br /> Change lsat lottery status :
+                <br /> Change last lottery status :
             </Typography>
 
             <Button variant="contained" color="primary" onClick={handleACTIVE} sx={{ mb: 3 }} disabled={!lastLottery || lastLottery.status != 0} >
