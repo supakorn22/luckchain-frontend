@@ -163,14 +163,16 @@ const contractUtils = {
         if (governmentMetadata.status == 3)
           contractMetadatat.winningNumber = governmentMetadata.winningNumber;
         contractMetadatat.winningNumberValid = governmentMetadata.winningNumberValid;
+
+        if (isCustomDigits) {
+          useCustomDigitsDealerLottery.setContractAddress(this.contractAddress);
+          targetDigits = await useCustomDigitsDealerLottery.targetDigits();
+        }
       }
 
       const contractMetadata = contractMetadatat;
 
-      if (isCustomDigits) {
-        useCustomDigitsDealerLottery.setContractAddress(this.contractAddress);
-        targetDigits = await useCustomDigitsDealerLottery.targetDigits();
-      }
+      
 
       for (const ticketNumberN of ticketNumbers) {
         const ticketNumber = Number(ticketNumberN);

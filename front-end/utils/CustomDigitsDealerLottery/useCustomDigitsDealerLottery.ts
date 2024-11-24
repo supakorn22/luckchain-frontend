@@ -5,7 +5,7 @@ import { get } from "http";
 import useWeb3 from '@hooks/useWeb3';
 import getBalance from '../getBalance';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
-
+import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -113,11 +113,20 @@ const contractUtils = {
         const lotteryType = Number(await contract.lotteryType());
         const metadata = await contract.metadata();
         const status = Number(metadata[0]);
-        const winingNumber = Number(metadata[1]);
-        const winnigPrize = Number(metadata[2]);
+        
         const winningNumberValid = metadata[3];
         const owner = await contract.owner();
         const digits = Number(lotteryTicket.digits);
+
+
+       
+        useGovernmentLottery.setContractAddress(governmentLottery);
+        const governmentMetadata = await useGovernmentLottery.metadata();
+       
+
+        const winingNumber = Number(governmentMetadata.winningNumber);
+        const winnigPrize = Number(governmentMetadata.winningNumberValid);
+
         let targetDigits = [];
 
         for (let i = 0; i < digits; i++) {

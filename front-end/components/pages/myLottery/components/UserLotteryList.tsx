@@ -1,59 +1,150 @@
 import React from 'react';
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Button,
+} from "@mui/material";
 
+import TruncateText from '@components/default/TruncateText/TruncateText';
 
-interface UserLotteryListProps {
-  tickets: LotteryGovernmentTicket[]; // Array of lottery tickets
+enum LotteryStatus {
+  NOT_STARTED = 0,
+  ACTIVE = 1,
+  ENDED = 2,
+  PRIZE_PAID = 3,
+  ARCHIVED = 4,
 }
 
-const UserLotteryList: React.FC<UserLotteryListProps> = ({ tickets }) => {
+
+const mapStatusToEnum = (status: number): string => {
+  switch (status) {
+    case LotteryStatus.NOT_STARTED:
+      return "Not Started";
+    case LotteryStatus.ACTIVE:
+      return "Active";
+    case LotteryStatus.ENDED:
+      return "Ended";
+    case LotteryStatus.PRIZE_PAID:
+      return "Prize Paid";
+    case LotteryStatus.ARCHIVED:
+      return "Archived";
+    default:
+      return "Unknown";
+  }
+};
+
+const CustomDigitsWinningNumber = (winningNumber: number,targetDigits : number[]): number => {
+  const winningNumberList = winningNumber.toString().split('').map(Number);
+  let customWinningNumber :number = 0;
+  
+  for (let i=0;i<targetDigits.length;i++){
+    customWinningNumber += winningNumberList[targetDigits[i]] * Math.pow(10,i);
+  
+  }
+
+  
+  return customWinningNumber;
+}
+
+interface UserLotteryListProps {
+  allUserLottery: getAllUserLottery; // Array of lottery tickets
+}
+
+const UserLotteryList: React.FC<UserLotteryListProps> = ({ allUserLottery }) => {
+  const reversedGovernmentLottery = [...allUserLottery.governmentLotterys].reverse();
+  const reversedDealerLottery = [...allUserLottery.dealerLotterys].reverse();
+
   return (
-    <div className="lottery-list">
-      <h3 className="text-3xl font-semibold text-gray-700 mx-5">Main Lottery</h3>
-      {tickets.map((ticket, index) => (
-        <div
-          key={index}
-          className="lottery-ticket bg-white p-1 rounded shadow-md hover:shadow-lg transition-shadow mb-1 mx-5"
-        >
-          <h3 className="text-xl font-semibold text-gray-700">Ticket #{index + 1}</h3>
-          <div className="ticket-details grid grid-cols-2">
-            {/* Ticket Number */}
-            <div className="flex">
-              <p className="text-gray-700 font-semibold mr-2">Ticket Number:</p>
-              <p className="text-gray-700">{Number(ticket.ticketNumber)}</p>
-            </div>
+    <div>
+    {/* Table Container for Government Lotteries */}
+    <TableContainer component={Paper}>
+      <Typography variant="h6" sx={{ p: 2 }} className="text-black">
+        Your Government Lotteries
+      </Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Address</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Winning Number</TableCell>
+            <TableCell>Winning Prize</TableCell>
+            <TableCell>ticketPrices</TableCell>
+            <TableCell>amount</TableCell>
+            <TableCell>Ticket Number</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {reversedGovernmentLottery.map((lottery, index) => (
+            <TableRow key={`gov-${index}`}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell><TruncateText text={lottery.contractAddress} /></TableCell>
+              <TableCell>Government Lottery</TableCell>
+              <TableCell>{mapStatusToEnum(lottery.contractMetadata.status)}</TableCell>
+              <TableCell>{lottery.contractMetadata.winningNumberValid ?  lottery.contractMetadata.winningNumber.toString() : 'not out' }</TableCell>
+              <TableCell>{lottery.contractMetadata.winnigPrize.toString()}</TableCell>
+              <TableCell>{lottery.ticketPrices.toString()}</TableCell>
+              <TableCell>{lottery.amount}</TableCell>
+              <TableCell>{lottery.ticketNumber}</TableCell>             
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
 
-            {/* Amount */}
-            <div className="flex">
-              <p className="text-gray-700 font-semibold mr-2">Amount:</p>
-              <p className="text-gray-700">{ticket.amount.toLocaleString()}</p>
-            </div>
+    <br></br>
+    <TableContainer component={Paper} >
+      <Typography className="text-black" variant="h6" sx={{ p: 2 }}>
+        Wildcard Dealer Lotteries
+      </Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Address</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Winning Number</TableCell>
+            <TableCell>Winning Prize</TableCell>
+            <TableCell>ticketPrices</TableCell>
+            <TableCell>amount</TableCell>
+            <TableCell>Ticket Number</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {reversedDealerLottery.map((lottery, index) => (
+            <TableRow key={`gov-${index}`}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell><TruncateText text={lottery.contractAddress} /></TableCell>
+              <TableCell>{lottery.isCustomDigits ? 'CustomDigits Lottery' : 'Exactmatch Lottery'  }</TableCell>
+              <TableCell>{mapStatusToEnum(lottery.contractMetadata.status)}</TableCell>
+              <TableCell>{lottery.contractMetadata.winningNumberValid ?  lottery.contractMetadata.winningNumber.toString() : 'not out' }</TableCell>
+              {/* <TableCell>{lottery.contractMetadata.winnigPrize.toString()}</TableCell> */}
+              <TableCell>{
+                lottery.isCustomDigits ? 
+                CustomDigitsWinningNumber(lottery.contractMetadata.winningNumber, lottery?.targetDigits ?? [])
+                : lottery.contractMetadata.winningNumber
+                  }
 
-            {/* Prize */}
-            <div className="flex">
-              <p className="text-gray-700 font-semibold mr-2">Prize:</p>
-              <p className="text-gray-700">{ticket.prize.toLocaleString()} wei</p>
-            </div>
 
-            {/* Status */}
-            <div className="flex">
-              <p className="text-gray-700 font-semibold mr-2">Status:</p>
-              <p
-                className={`text-lg font-bold ${
-                  ticket.status === 'win'
-                    ? 'text-green-500'
-                    : ticket.status === 'lose'
-                    ? 'text-red-500'
-                    : 'text-yellow-500'
-                }`}
-              >
-                {ticket.status.toUpperCase()}
-              </p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+                </TableCell>
+              <TableCell>{lottery.ticketPrices.toString()}</TableCell>
+              <TableCell>{lottery.amount}</TableCell>
+              <TableCell>{lottery.ticketNumber}</TableCell>             
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </div>
   );
 };
 

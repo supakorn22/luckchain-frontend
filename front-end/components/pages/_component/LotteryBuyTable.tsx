@@ -93,7 +93,12 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
                 <TableCell><TruncateText text={lottery.contractAddress} /></TableCell>
                 <TableCell>Government Lottery</TableCell>
                 <TableCell>{mapStatusToEnum(lottery.status)}</TableCell>
-                <TableCell>{lottery.winingNumber.toString()}</TableCell>
+                <TableCell>{
+               lottery.winningNumberValid ?
+                lottery.winingNumber.toString() :
+                'not out'
+                
+                }</TableCell>
                 <TableCell>{lottery.winnigPrize.toString()}</TableCell>
                 <TableCell><TruncateText text={lottery.owner} /></TableCell>
                 <TableCell>
@@ -145,10 +150,13 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ data, onBuyClick}) => {
                 <TableCell>{governmentLotterysAddressToRound[lottery.governmentLottery][1]}</TableCell>
                 <TableCell>{
                 
-                Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
-                    ? CustomDigitsWinningNumber(governmentLotterysAddressToRound[lottery.governmentLottery][2],(lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
-                    : governmentLotterysAddressToRound[lottery.governmentLottery][2]
+                // Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                //     ? CustomDigitsWinningNumber(governmentLotterysAddressToRound[lottery.governmentLottery][2],(lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                //     : governmentLotterysAddressToRound[lottery.governmentLottery][2]
                 
+                Array.isArray((lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits) ? 
+                CustomDigitsWinningNumber(lottery.winingNumber, (lottery as CustomDigitsDealerLotteryFullMetadata).targetDigits)
+                : lottery.winingNumber
                   
                   
                   

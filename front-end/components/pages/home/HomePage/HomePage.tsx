@@ -58,14 +58,17 @@ const HomePage: FC<IHomePage> = () => {
 				<Typography className="text-black" >
 					In this home page you can buy lottery by click on buy button. You can see the list of lottery below.
 					<br /> If the buy button is not show that means the lottery cant buy cause the status is not active.
-					<br /> The buy button will show if the status is ACTIVE.
+					<br /> The buy button will show if the lottery status is ACTIVE.
 				</Typography>
 
 				<BuyLottery contractData={selectedContractData} onPurchase={() => console.log("Purchased!")} />
 				<br />
+				<Typography className="text-black" >
+					Selled lottery wwill show here. Maybe it slow to load.
+				</Typography>
 
 				{registerData && (
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<div className='text-black'>Loading...</div>}>
 						<LotteryTable data={registerData} onBuyClick={handleBuyClick} />
 					</Suspense>
 				)}
