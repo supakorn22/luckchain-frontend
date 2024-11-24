@@ -1,3 +1,7 @@
+
+
+
+
 # LuckChain Lottery 
 
 Welcome to the LuckChain Lottery! This project is a decentralized application built on the Binance Smart Chain (BSC) Testnet using Next.js, Ether.js, and the Next.js Dapp framework.
@@ -48,12 +52,9 @@ To get started with the LuckChain Lottery, follow these steps:
 3. Create a `.env.local` file and add your environment variables:
 
         
-        NEXT_PUBLIC_CONTRACT1_ADDRESS = 
-        NEXT_PUBLIC_CONTRACT2_ADDRESS = 
-        NEXT_PUBLIC_CONTRACT3_ADDRESS = 
-        NEXT_PUBLIC_CONTRACT1_BYTE =
-        NEXT_PUBLIC_CONTRACT2_BYTE =
-        NEXT_PUBLIC_CONTRACT3_BYTE
+        NEXT_PUBLIC_LotteryRegistry_ADDRESS = 0x25ce508Ed41f162C37AE84CbC51ca67ed535e8e4
+        NEXT_PUBLIC_RandomSubscriber_ADDRESS = 0x722d2B77039052d3f314AcF01C144B3078135A83
+
         
 
 5. Run the development server:
