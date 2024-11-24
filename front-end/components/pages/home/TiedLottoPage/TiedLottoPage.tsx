@@ -56,7 +56,7 @@ export const TiedLottoPage = () => {
   const [randomContractAddress1, setRandomContractAddress1] = useState<string>('');
 
   const [buttonDisable1, setButtonDisable1] = useState<boolean>(false);
-  const buttonDisableCon1: boolean =  (governmentLotteryFullMetadata!= undefined && governmentLotteryFullMetadata.status >=1  ) || winningPrize1 == 0 || tickerPrice1 == 0 || digits1 == 0 || maxSet1 == 0;
+  const buttonDisableCon1: boolean =  governmentLotteryFullMetadata == undefined|| (governmentLotteryFullMetadata!= undefined && governmentLotteryFullMetadata.status >1  ) || winningPrize1 == 0 || tickerPrice1 == 0 || digits1 == 0 || maxSet1 == 0;
 
   const [digitsSelected,setSelectedDigits] = useState<number[]>([]);
 

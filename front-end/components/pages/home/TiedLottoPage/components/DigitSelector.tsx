@@ -31,24 +31,24 @@ const MultipleDigitSelector: React.FC<MultipleDigitSelectorProps> = ({
 
   return (
     <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
-      {digits.map((digit) => (
-        <button
-          key={digit}
-          onClick={() => toggleSelect(digit)}
-          style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            backgroundColor: selectedDigits.includes(digit) ? '#0070f3' : '#fff',
-            color: selectedDigits.includes(digit) ? '#fff' : '#000',
-            cursor: 'pointer',
-          }}
-        >
-          {digit}
-        </button>
-      ))}
-    </div>
+  {digits.slice().reverse().map((digit) => (
+    <button
+      key={digit}
+      onClick={() => toggleSelect(digit)}
+      style={{
+        padding: '10px 20px',
+        fontSize: '16px',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        backgroundColor: selectedDigits.includes(digit) ? '#0070f3' : '#fff',
+        color: selectedDigits.includes(digit) ? '#fff' : '#000',
+        cursor: 'pointer',
+      }}
+    >
+      {digit}
+    </button>
+  ))}
+</div>
   );
 };
 
