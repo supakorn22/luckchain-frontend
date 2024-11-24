@@ -10,15 +10,15 @@ const MyLottery: FC<{}> = () => {
 
   const [governmentLottery,setGovernmentLottery ] =  useState <LotteryGovernmentTicket[]>([])
 
-  useEffect(() => {
-    useLotteryRegistry.getAllGovernmentLottery()
-      .then((result) => {
-        setGovernmentLottery(result)
-        // console.log(result)
+  // useEffect(() => {
+  //   useLotteryRegistry.getAllGovernmentLottery()
+  //     .then((result) => {
+  //       setGovernmentLottery(result)
+  //       // console.log(result)
 
-      })
+  //     })
      
-  }, []);
+  // }, []);
 
 
 

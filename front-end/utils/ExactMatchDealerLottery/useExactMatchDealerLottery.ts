@@ -110,7 +110,17 @@ const contractUtils = {
       }
     },
 
-
+    async governmentLottery() : Promise<string> { 
+        try {
+          const contract = await this.getContractInstance();
+          const governmentLottery = await contract.governmentLottery();
+          return governmentLottery;
+        } catch (error) {
+          console.error("Error governmentLottery", error);
+          throw error;
+        }
+    }
+ 
     
   
 

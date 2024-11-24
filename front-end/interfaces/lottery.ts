@@ -1,5 +1,6 @@
 
 
+
 interface BuyedTicket {
     contractAddress: string;
     lotteryType: number;
@@ -13,7 +14,10 @@ interface BuyedTicket {
     contractMetadata:ContractMetadata;
 }
 
-
+interface getAllUserLottery {
+    governmentLotterys: BuyedTicket[];
+   dealerLotterys: BuyedTicket[];
+}
 
 interface LotteryGovernmentTicket {
     ticketNumber: number;

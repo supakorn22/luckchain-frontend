@@ -8,8 +8,9 @@ import { promises } from "dns";
 import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
 import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
 import useCustomDigitsDealerLottery from '@utils/CustomDigitsDealerLottery/useCustomDigitsDealerLottery';
-import useLotteryTicket   from '@utils/LotteryTicket/useLotteryTicket';
+import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
 import useBaseLottery from '@utils/BaseLottery/useBaseLottery';
+import { use } from "react";
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -96,7 +97,7 @@ const contractUtils = {
         }
     },
 
-    async lotteries(type: number, index: number):Promise<[string,string,boolean]> {
+    async lotteries(type: number, index: number): Promise<[string, string, boolean]> {
 
         try {
             const contract = await this.getContractInstance();
@@ -153,121 +154,121 @@ const contractUtils = {
 
 
 
-    async getLastGovernmentNotactiveAddress() {
+    // async getLastGovernmentNotactiveAddress() {
 
+    //     try {
+
+    //         let i = 0;
+    //         let addressList: string[] = [];
+    //         const contract = await this.getContractInstance();
+
+    //         for (; 1; i++) {
+    //             const result = await contract.lotteries(0, i + 1);
+    //             if (result[2] == false) {
+    //                 break;
+    //             }
+    //             addressList[i] = result[0];
+    //         }
+
+    //         useGovernmentLottery.setContractAddress(addressList[i - 1])
+    //         let metadata = await useGovernmentLottery.metadata()
+
+    //         if (metadata[0] >= 3) {
+    //             return addressList[i - 1]
+    //         }
+
+    //         return addressList[i - 2]
+
+
+
+
+    //     }
+    //     catch (error) {
+    //         console.error("Error getLastGovernmentAddress", error);
+    //         throw error;
+    //     }
+    // },
+
+
+
+
+
+    // async getAllGovernmentLottery(): Promise<LotteryGovernmentTicket[]> {
+
+    //     try {
+    //         let i = 0;
+    //         let addressList: string[] = [];
+    //         const contract = await this.getContractInstance();
+    //         let lotteryGovernmentTicket: LotteryGovernmentTicket[] = [];
+
+    //         for (; 1; i++) {
+    //             const result = await contract.lotteries(0, i + 1);
+    //             if (result[2] == false) {
+    //                 break;
+    //             }
+    //             addressList[i] = result[0];
+    //         }
+
+    //         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    //         const userAddress = accounts[0];
+
+    //         for (const address of addressList) {
+    //             useGovernmentLottery.setContractAddress(address)
+
+    //             const metadata = await useGovernmentLottery.metadata()
+
+    //             if (metadata[0] == 0)
+    //                 break;
+
+    //             const winNumber = metadata[1]
+    //             const prize = metadata[2]
+    //             const tickets = await useGovernmentLottery.getTickets(userAddress)
+
+    //             for (const ticket of tickets) {
+    //                 const amount = await useGovernmentLottery.getAmount(userAddress, ticket);
+    //                 const isWinningTicket = metadata[0] >= 3 && ticket == winNumber;
+
+    //                 // Check if the winning ticket is already stored in localStorage
+    //                 const storedWinningTicket = localStorage.getItem('winTicket');
+    //                 if (isWinningTicket && storedWinningTicket !== ticket.toString()) {
+    //                     localStorage.setItem('winTicket', ticket.toString()); // Store the winning ticket number
+    //                     alert(`Congratulations! Your winning ticket number is ${ticket}!`);
+    //                 }
+
+    //                 lotteryGovernmentTicket.push({
+    //                     ticketNumber: ticket,
+    //                     prize: prize,
+    //                     status: metadata[0] >= 3 ? (isWinningTicket ? 'win' : 'lose') : 'process',
+    //                     amount: amount
+    //                 });
+    //             }
+    //         }
+
+
+    //         return lotteryGovernmentTicket;
+
+    //     }
+    //     catch (error) {
+    //         console.error("Error getAllGovernmentLottery", error);
+    //         throw error;
+    //     }
+
+
+    // },
+
+    async getData(): Promise<LotteryRegistrySrotage> {
         try {
-
-            let i = 0;
-            let addressList: string[] = [];
-            const contract = await this.getContractInstance();
-
-            for (; 1; i++) {
-                const result = await contract.lotteries(0, i + 1);
-                if (result[2] == false) {
-                    break;
-                }
-                addressList[i] = result[0];
-            }
-
-            useGovernmentLottery.setContractAddress(addressList[i - 1])
-            let metadata = await useGovernmentLottery.metadata()
-
-            if (metadata[0] >= 3) {
-                return addressList[i - 1]
-            }
-
-            return addressList[i - 2]
-
-
-
-
-        }
-        catch (error) {
-            console.error("Error getLastGovernmentAddress", error);
-            throw error;
-        }
-    },
-
-
-
-
-
-    async getAllGovernmentLottery(): Promise<LotteryGovernmentTicket[]> {
-
-        try {
-            let i = 0;
-            let addressList: string[] = [];
-            const contract = await this.getContractInstance();
-            let lotteryGovernmentTicket: LotteryGovernmentTicket[] = [];
-
-            for (; 1; i++) {
-                const result = await contract.lotteries(0, i + 1);
-                if (result[2] == false) {
-                    break;
-                }
-                addressList[i] = result[0];
-            }
-
-            const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-            const userAddress = accounts[0];
-
-            for (const address of addressList) {
-                useGovernmentLottery.setContractAddress(address)
-
-                const metadata = await useGovernmentLottery.metadata()
-
-                if (metadata[0] == 0)
-                    break;
-
-                const winNumber = metadata[1]
-                const prize = metadata[2]
-                const tickets = await useGovernmentLottery.getTickets(userAddress)
-
-                for (const ticket of tickets) {
-                    const amount = await useGovernmentLottery.getAmount(userAddress, ticket);
-                    const isWinningTicket = metadata[0] >= 3 && ticket == winNumber;
-                
-                    // Check if the winning ticket is already stored in localStorage
-                    const storedWinningTicket = localStorage.getItem('winTicket');
-                    if (isWinningTicket && storedWinningTicket !== ticket.toString()) {
-                        localStorage.setItem('winTicket', ticket.toString()); // Store the winning ticket number
-                        alert(`Congratulations! Your winning ticket number is ${ticket}!`);
-                    }
-                
-                    lotteryGovernmentTicket.push({
-                        ticketNumber: ticket,
-                        prize: prize,
-                        status: metadata[0] >= 3 ? (isWinningTicket ? 'win' : 'lose') : 'process',
-                        amount: amount
-                    });
-                }
-            }
-
-
-            return lotteryGovernmentTicket;
-
-        }
-        catch (error) {
-            console.error("Error getAllGovernmentLottery", error);
-            throw error;
-        }
-
-
-    },
-
-    async getData():Promise<LotteryRegistrySrotage>{
-        try{
             const contract = await this.getContractInstance();
             const owner = await contract.owner();
 
-        
-         let governmentLotterys: GovernmentLotteryFullMetadata[] = []
-         let wildcardDealerLotterys: (CustomDigitsDealerLotteryFullMetadata |  ExactMatchDealerLotteryFullMetadata) [] = [];
 
-          //get governmentLotterys
-            for(let i = 1 ; 1 ; i++){
-                const governmentLottery = await contract.lotteries(0,i);
-                if(governmentLottery[2] == false){
+            let governmentLotterys: GovernmentLotteryFullMetadata[] = []
+            let wildcardDealerLotterys: (CustomDigitsDealerLotteryFullMetadata | ExactMatchDealerLotteryFullMetadata)[] = [];
+
+            //get governmentLotterys
+            for (let i = 1; 1; i++) {
+                const governmentLottery = await contract.lotteries(0, i);
+                if (governmentLottery[2] == false) {
                     break;
                 }
                 useGovernmentLottery.setContractAddress(governmentLottery[0]);
@@ -275,19 +276,18 @@ const contractUtils = {
             }
 
             //get wildcardDealerLotterys
-            for(let i = 1 ; 1 ; i++){
-                const dealerLottery = await contract.lotteries(1,i);
-                if(dealerLottery[2] == false){
+            for (let i = 1; 1; i++) {
+                const dealerLottery = await contract.lotteries(1, i);
+                if (dealerLottery[2] == false) {
                     break;
                 }
-               
+
                 useBaseLottery.setContractAddress(dealerLottery[0]);
-                if(await useBaseLottery.checkDealer())
-                {
+                if (await useBaseLottery.checkDealer()) {
                     useCustomDigitsDealerLottery.setContractAddress(dealerLottery[0]);
                     wildcardDealerLotterys.push(await useCustomDigitsDealerLottery.getFullMetadata());
                 }
-                else{
+                else {
                     useExactMatchDealerLottery.setContractAddress(dealerLottery[0]);
                     wildcardDealerLotterys.push(await useExactMatchDealerLottery.getFullMetadata());
                 }
@@ -301,22 +301,22 @@ const contractUtils = {
                 // }
             }
 
-            return {owner,governmentLotterys,wildcardDealerLotterys };
+            return { owner, governmentLotterys, wildcardDealerLotterys };
         }
-        catch(error){
+        catch (error) {
             console.error("Error getData", error);
             throw error;
         }
 
     },
 
-    async getGovernmentData():Promise<GovernmentLotteryFullMetadata[]>{
-        try{
+    async getGovernmentData(): Promise<GovernmentLotteryFullMetadata[]> {
+        try {
             const contract = await this.getContractInstance();
             let governmentLotterys: GovernmentLotteryFullMetadata[] = []
-            for(let i = 1 ; 1 ; i++){
-                const governmentLottery = await contract.lotteries(0,i);
-                if(governmentLottery[2] == false){
+            for (let i = 1; 1; i++) {
+                const governmentLottery = await contract.lotteries(0, i);
+                if (governmentLottery[2] == false) {
                     break;
                 }
                 useGovernmentLottery.setContractAddress(governmentLottery[0]);
@@ -324,44 +324,93 @@ const contractUtils = {
             }
             return governmentLotterys;
         }
-        catch(error){
+        catch (error) {
             console.error("Error getGovernmentData", error);
             throw error;
         }
     },
-// (randomContractAddress : string,winningPrize :number,tickerPrice : number,digits:number = 6,maxSet:number = 999999 )
+    // (randomContractAddress : string,winningPrize :number,tickerPrice : number,digits:number = 6,maxSet:number = 999999 )
     async addGovernmentLottery(winningPrize: number, tickerPrice: number, digits: number = 6, maxSet: number = 999999, randomContractAddress?: string) {
-        if(!randomContractAddress){
+        if (!randomContractAddress) {
             randomContractAddress = CONTRACT_CONFIG.RandomSubscriberAddress;
         }
-    
-        alert('You need to confirm the transaction in your wallet 4 times.');
-      const [contractAddress,ticketAddress] = await useGovernmentLottery.fullDeploy(randomContractAddress,winningPrize,tickerPrice,digits,maxSet)
 
-        await this.add(contractAddress,ticketAddress);
+        alert('You need to confirm the transaction in your wallet 4 times.');
+        const [contractAddress, ticketAddress] = await useGovernmentLottery.fullDeploy(randomContractAddress, winningPrize, tickerPrice, digits, maxSet)
+
+        await this.add(contractAddress, ticketAddress);
 
     },
 
-    async addWildcardDealerLottery(governmentLotteryAddress: string,winningPrize :number,targetDigits :number [] ,ticketPrice :number,maxSet:number = 999999){
+    async addWildcardDealerLottery(governmentLotteryAddress: string, winningPrize: number, targetDigits: number[], ticketPrice: number, maxSet: number = 999999) {
         alert('You need to confirm the transaction in your wallet 4 times.');
-        const [contractAddress,ticketAddress] = await useCustomDigitsDealerLottery.fullDeploy(governmentLotteryAddress,winningPrize,targetDigits,ticketPrice,maxSet)
-        await this.add(contractAddress,ticketAddress);
+        const [contractAddress, ticketAddress] = await useCustomDigitsDealerLottery.fullDeploy(governmentLotteryAddress, winningPrize, targetDigits, ticketPrice, maxSet)
+        await this.add(contractAddress, ticketAddress);
     },
 
-    async addExactMatchDealerLottery(governmentLotteryAddress: string,winningPrize :number,ticketPrice : number,maxSet:number = 999999){
+    async addExactMatchDealerLottery(governmentLotteryAddress: string, winningPrize: number, ticketPrice: number, maxSet: number = 999999) {
         alert('You need to confirm the transaction in your wallet 4 times.');
-        const [contractAddress,ticketAddress] = await useExactMatchDealerLottery.fullDeploy(governmentLotteryAddress,winningPrize,ticketPrice,maxSet)
-        await this.add(contractAddress,ticketAddress);
+        const [contractAddress, ticketAddress] = await useExactMatchDealerLottery.fullDeploy(governmentLotteryAddress, winningPrize, ticketPrice, maxSet)
+        await this.add(contractAddress, ticketAddress);
     },
+
+    async getAllUserLottery(): Promise<getAllUserLottery> {
+        try {
+            let governmentLotterys: BuyedTicket[] = [];
+            let dealerLotterys: BuyedTicket[] = [];
+
+            const contract = await this.getContractInstance();
+
+
+
+
+
+            //get governmentLotterys
+            for (let i = 1; 1; i++) {
+                const governmentLottery = await contract.lotteries(0, i);
+                if (governmentLottery[2] == false) {
+                    break;
+                }
+                
+                useBaseLottery.setContractAddress(governmentLottery[0]);
+                const buyyedLottey = await useBaseLottery.getAllBuyedTickets();
+                governmentLotterys = governmentLotterys.concat(buyyedLottey);
+
+            }
+
+            //get governmentLotterys
+            for (let i = 1; 1; i++) {
+
+                const dealerLottery = await contract.lotteries(1, i);
+                if (dealerLottery[2] == false) {
+                    break;
+                }
+                
+
+                useBaseLottery.setContractAddress(dealerLottery[0]);
+                const dealerBuyedLottey = await useBaseLottery.getAllBuyedTickets();
+                dealerLotterys = dealerLotterys.concat(dealerBuyedLottey);
+            }
+
+
+
+
+            return { governmentLotterys, dealerLotterys };
+        }
+        catch (error) {
+            console.error("Error getAllUserLottery", error);
+            throw error;
+        }
+    }
 
 
 };
 
 function isCustomDigitsDealerLottery(
     lottery: CustomDigitsDealerLotteryFullMetadata | ExactMatchDealerLotteryFullMetadata
-  ): lottery is CustomDigitsDealerLotteryFullMetadata {
+): lottery is CustomDigitsDealerLotteryFullMetadata {
     return 'targetDigits' in lottery;
-  }
+}
 
 export default contractUtils;
-export {isCustomDigitsDealerLottery}
+export { isCustomDigitsDealerLottery }

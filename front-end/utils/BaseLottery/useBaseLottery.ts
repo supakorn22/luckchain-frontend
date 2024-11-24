@@ -7,7 +7,9 @@ import getBalance from '../getBalance';
 import useExactMatchDealerLottery from '@utils/ExactMatchDealerLottery/useExactMatchDealerLottery'
 import useCustomDigitsDealerLottery from '@utils/CustomDigitsDealerLottery/useCustomDigitsDealerLottery';
 import useLotteryTicket from '@utils/LotteryTicket/useLotteryTicket';
+import useGovernmentLottery from '@utils/GovernmentLottery/useGovernmentLottery';
 import { start } from "repl";
+import { use } from "react";
 
 // Constants and configuration
 export const CONTRACT_CONFIG = {
@@ -80,10 +82,10 @@ const contractUtils = {
 
   },
 
-  async getAmount(): Promise<number> {
+  async getAmount(buyers: string, ticketNumber: Number): Promise<number> {
     try {
       const contract = await this.getContractInstance();
-      const amount = await contract.getAmount();
+      const amount = await contract.getAmount(buyers, ticketNumber);
       return Number(amount);
     }
     catch (error) {
@@ -132,30 +134,48 @@ const contractUtils = {
       let buyedTickets: BuyedTicket[] = [];
 
       const contract = await this.getContractInstance();
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      const userAddress = accounts[0];
 
+      const ticketNumbers = await contract.getTickets(userAddress);
 
-      const ticketNumbers = await contract.getTickets();
+      if (ticketNumbers.length == 0) {
+        return [];
+      }
 
       const lotteryTicketAddress = await contract.lotteryTicket();
       useLotteryTicket.setContractAddress(lotteryTicketAddress);
 
-      let amouns: number[] = [];
 
       const contractAddress = this.contractAddress;
-      const lotteryType = await contract.lotteryType();
-      const isCustomDigits = await this.checkDealer();
-      const digits = await useLotteryTicket.digits();
-      const ticketPrices = await useLotteryTicket.getListingPrice();
+      const lotteryType = Number(await contract.lotteryType());
+      const isCustomDigits = lotteryType ==0 ? false :  await this.checkDealer();
+      const digits = Number(await useLotteryTicket.digits());
+      const ticketPrices = Number(await useLotteryTicket.getListingPrice());
       const baseLottery = this.contractAddress
-      const contractMetadata = await contract.metadata();
+      let contractMetadatat = await this.metadata();
       let targetDigits = undefined;
+      if (lotteryType == 1) {
+        useExactMatchDealerLottery.setContractAddress(this.contractAddress);
+        const governanceLotteryAddress = await useExactMatchDealerLottery.governmentLottery();
+        useGovernmentLottery.setContractAddress(governanceLotteryAddress);
+        const governmentMetadata = await useGovernmentLottery.metadata();
+        if (governmentMetadata.status == 3)
+          contractMetadatat.winningNumber = governmentMetadata.winningNumber;
+        contractMetadatat.winningNumberValid = governmentMetadata.winningNumberValid;
+      }
+
+      const contractMetadata = contractMetadatat;
+
       if (isCustomDigits) {
+        useCustomDigitsDealerLottery.setContractAddress(this.contractAddress);
         targetDigits = await useCustomDigitsDealerLottery.targetDigits();
       }
 
-      for (const ticketNumber of ticketNumbers) {
-        const amount = await contract.getAmount(ticketNumber);
-        buyedTickets.push({ contractAddress,lotteryType, isCustomDigits, digits, amount, ticketPrices, ticketNumber, baseLottery, targetDigits, contractMetadata });
+      for (const ticketNumberN of ticketNumbers) {
+        const ticketNumber = Number(ticketNumberN);
+        const amount = Number(await contract.getAmount(userAddress, ticketNumber));
+        buyedTickets.push({ contractAddress, lotteryType, isCustomDigits, digits, amount, ticketPrices, ticketNumber, baseLottery, targetDigits, contractMetadata });
       }
 
       return buyedTickets;
@@ -179,7 +199,7 @@ const contractUtils = {
     }
   },
 
-  async buy(ticketNumber: number, ticketAmount: number):Promise<void> {
+  async buy(ticketNumber: number, ticketAmount: number): Promise<void> {
 
 
     try {

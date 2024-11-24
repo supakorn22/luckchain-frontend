@@ -113,16 +113,39 @@ const BuyLottery: FC = () => {
         // }
 
         
+        // try{
+        //     const reslt = await useExactMatchDealerLottery.fullDeploy('0x75a357407d37e2E5c5efdF695E8806CA592fFe1D',1000,1000);
+        //     console.log(reslt);
+        // }
+        // catch(error){
+        //     console.error("Error queryById", error);
+        //     throw error;
+        // }
+
+
+        //         try{
+        //             useBaseLottery.setContractAddress("0x146913E0062143F5d61b82F3c10E1f01dB322164")
+        //             const reslt = await useBaseLottery.getAllBuyedTickets();
+        //             console.log(reslt);
+        //     // const reslt = await useExactMatchDealerLottery.fullDeploy('0x75a357407d37e2E5c5efdF695E8806CA592fFe1D',1000,1000);
+        //     // console.log(reslt);
+        // }
+        // catch(error){
+        //     console.error("Error queryById", error);
+        //     throw error;
+        // }
+
         try{
-            const reslt = await useExactMatchDealerLottery.fullDeploy('0x75a357407d37e2E5c5efdF695E8806CA592fFe1D',1000,1000);
-            console.log(reslt);
+                   
+                    const reslt = await useLotteryRegistry.getAllUserLottery();
+                    console.log(reslt);
+            // const reslt = await useExactMatchDealerLottery.fullDeploy('0x75a357407d37e2E5c5efdF695E8806CA592fFe1D',1000,1000);
+            // console.log(reslt);
         }
         catch(error){
             console.error("Error queryById", error);
             throw error;
         }
-
-
 
     }
 
